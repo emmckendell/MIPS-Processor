@@ -2,8 +2,9 @@
 
 module instructionMemory(
     input clk,
-    output reg [31:0] data,     // output of instruction memory
-    input wire [31:0] address   // input of instruction memory
+    input rst,
+    input wire [31:0] address,  // input of instruction memory
+    output reg [31:0] data      // output of instruction memory
     );
     
     // register declarations
@@ -21,7 +22,16 @@ module instructionMemory(
         Memory[7] <= 'h7000_0077;
         Memory[8] <= 'h8000_0088;
         Memory[9] <= 'h9000_0099;
+        // Memory[10]
+        // . . .
+        // Memory[32]
     end
     
-    always @(posedge clk) data <= Memory[address];      
+    always @(posedge clk) 
+    begin
+        if(rst)
+            data <= 0;
+        else
+            data <= Memory[address];    
+    end  
 endmodule

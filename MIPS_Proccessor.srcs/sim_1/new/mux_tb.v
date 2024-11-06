@@ -45,7 +45,7 @@ module mux_tb;
                             // so tricky run lines, wipe data until delay
         #5;                 // time = 46
         
-        sel = 1'bx; #20;         // x exists in hex, and deci as well; x indicates don't care condition
+        sel = 1'bx; #20;    // x exists in hex, and deci as well; x indicates don't care condition
         $finish;
     end
     

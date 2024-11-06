@@ -26,12 +26,14 @@ module programCounter_tb;
     
     initial 
     begin
+        $monitor("time = %t, rst = %b, npc = %h, pc = %h", $time, rst, npc, pc);
+        
         // initialize
         rst = 1;
         npc = 32'h0000_0000;
         #10;
         
-        rst = 0; #10; 
+        rst = 0; 
         
         npc = 32'h0000_0008; #20; // pc = 0000_0008
         npc = 32'h0000_0004; #20; // pc = 0000_0004
@@ -39,11 +41,6 @@ module programCounter_tb;
         
         rst = 1; #20;       
         $finish;
-    end
-
-    // Monitor output
-    initial begin
-        $monitor("time = %t, rst = %b, npc = %h, pc = %h", $time, rst, npc, pc);
     end
     
 endmodule

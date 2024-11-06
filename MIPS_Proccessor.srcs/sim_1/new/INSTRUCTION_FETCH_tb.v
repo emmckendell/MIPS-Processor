@@ -29,6 +29,15 @@ module INSTRUCTION_FETCH_tb;
     
     initial 
     begin
+//        $monitor("time %t, pc = %h, npc = %h, dataOut = %h, IF_ID_instruction = %h, IF_ID_npc = %h", 
+//                 $time, 
+//                 INSTRUCTION_FETCH_uut.pc, 
+//                 INSTRUCTION_FETCH_uut.npc, 
+//                 INSTRUCTION_FETCH_uut.dataOut,
+//                 IF_ID_npc, 
+//                 IF_ID_instruction
+//                 );
+        
         rst = 1;
         EX_MEM_PCSrc = 0;
         EX_MEM_npc = 32'h0000_0000;
@@ -36,25 +45,19 @@ module INSTRUCTION_FETCH_tb;
 
         rst = 0; 
               
-        EX_MEM_PCSrc = 0;
-        EX_MEM_npc = 32'h0000_0004; #50; 
-        EX_MEM_PCSrc = 1; #50;
+        EX_MEM_PCSrc = 1;
+        EX_MEM_npc = 32'h0000_0004;
+        #50;
         
         EX_MEM_PCSrc = 0;
         EX_MEM_npc = 32'h0000_0008;
         #50;
         
+        EX_MEM_PCSrc = 1;
+        EX_MEM_npc = 32'h0000_0008;
+        #50;     
+        
         $finish;
     end
-    
-    initial begin
-        $monitor("At time %t: pc = %h, npc = %h, dataOut = %h, IF_ID_instruction = %h, IF_ID_npc = %h", 
-                 $time, 
-                 INSTRUCTION_FETCH_uut.pc, 
-                 INSTRUCTION_FETCH_uut.npc, 
-                 INSTRUCTION_FETCH_uut.dataOut, 
-                 IF_ID_instruction, 
-                 IF_ID_npc
-                 );
-    end
+
 endmodule

@@ -26,20 +26,21 @@ module instructionMemory_tb;
 
     initial 
     begin
-        $monitor("time %t, rst = %b, address = %h, data = %h", $time, rst, address, data);
+        $monitor("time %t, rst = %b, address = %h, data = %h", 
+        $time, rst, address, data);
         
         // initialize
         rst = 1;
         address = 0;
         #10;
 
-        rst = 1;
+        rst = 0;
 
-        address = 0; #10;  
-        address = 1;
-        address = 5;
-        address = 9;
-        address = 10;
+        address = 0; #20;  
+        address = 1; #20;
+        address = 2; #20;
+        address = 3; #20;
+        address = 4; #20;
 
         rst = 1; #20; 
         

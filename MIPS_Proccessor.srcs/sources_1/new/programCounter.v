@@ -4,7 +4,7 @@ module programCounter(
     input clk,
     input rst,
     input wire [31:0] npc,  // input of_mod
-    output reg [31:0] pc   // output of pc_mod
+    output reg [31:0] pc    // output of pc_mod
     );
     
     initial 
@@ -17,7 +17,7 @@ module programCounter(
         if(rst)
             pc <= 0;
         else
-            pc <= npc;          // non-blocking assignment for pc = npc
+            pc <= npc;      // non-blocking assignment for pc = npc
     end
       
 endmodule

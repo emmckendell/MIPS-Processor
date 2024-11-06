@@ -7,7 +7,7 @@ the program counter and instructions
 
 module IF_ID(
     input wire clk,
-    inout wire rst,
+    input wire rst,
     input wire [31:0] npc, instruction,         // input of IF/ID npc register
     output reg [31:0] npcOut, instructionOut    // output of IF/ID instruction. npc register
     );

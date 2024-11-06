@@ -24,7 +24,7 @@ module instructionMemory(
         Memory[9] <= 'h9000_0099;
         // Memory[10]
         // . . .
-        // Memory[32]
+        // Memory[127]
     end
     
     always @(posedge clk) 

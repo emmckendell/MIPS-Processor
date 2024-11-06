@@ -54,13 +54,5 @@ module INSTRUCTION_FETCH(
         .npcOut(IF_ID_npc),
         .instructionOut(IF_ID_instruction)
         );
-        
-    initial
-    begin
-        $display("time\t pc\t npc\t dataOut(MEM)\t IF_ID_instruction\t ID_ID_npc");
-        $monitor("0d\t %0d\t %0d\t %b\t %b\t %0d",
-        $time, pc, npc, dataOut, IF_ID_instruction, IF_ID_npc);
-        #24
-        $finish;
-    end
+    
 endmodule

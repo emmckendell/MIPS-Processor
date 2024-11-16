@@ -1,20 +1,21 @@
 `timescale 1ns / 1ps
 
-/*
-Implements an IF/ID pipeline register that inputs and outputs 
-the program counter and instructions
-*/
-
 module IF_ID(
     input wire clk,
     input wire rst,
-    input wire [31:0] npc, instruction,         // input of IF/ID npc register
-    output reg [31:0] npcOut, instructionOut    // output of IF/ID instruction. npc register
+    
+    // input
+    input wire [31:0] nextProgramCount,
+    input wire [31:0] instruction,
+    
+    // output
+    output reg [31:0] npcIDOut, 
+    output reg [31:0] instructionOut
     );
     
     initial 
     begin
-        npcOut <= 0;
+        npcIDOut <= 0;
         instructionOut <= 0;
     end
     
@@ -22,15 +23,13 @@ module IF_ID(
     begin
         if(rst)
         begin
-            npcOut <= 0;
+            npcIDOut <= 0;
             instructionOut <= 0;
-        end
-        
+        end   
         else
         begin
-            npcOut <= npc;
+            npcIDOut <= nextProgramCount;
             instructionOut <= instruction;
         end
     end
-
 endmodule

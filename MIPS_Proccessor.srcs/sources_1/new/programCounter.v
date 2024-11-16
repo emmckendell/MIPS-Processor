@@ -3,21 +3,21 @@
 module programCounter(
     input clk,
     input rst,
-    input wire [31:0] npc,  // input of_mod
-    output reg [31:0] pc    // output of pc_mod
+    input wire [31:0] nextProgramCount,
+    output reg [31:0] ProgramCount
     );
     
     initial 
     begin
-        pc <= 0;
+        ProgramCount <= 0;
     end
     
     always @(posedge clk) 
     begin
         if(rst)
-            pc <= 0;
+            ProgramCount <= 0;
         else
-            pc <= npc;      // non-blocking assignment for pc = npc
-    end
-      
+            // non-blocking assignment
+            ProgramCount <= nextProgramCount;
+    end   
 endmodule

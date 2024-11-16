@@ -1,10 +1,14 @@
 `timescale 1ns / 1ps
 
 module incrementer(
-    input [31:0] pc,
-    output [31:0] next_pc
+    input [31:0] ProgramCount,
+    output [31:0] nextProgramCount
     );
     
-    // assign next_pc = pc + 4; // for byte addressable
-    assign next_pc = pc + 1;    // for word addressable
+    // for byte addressable
+    // assign nextProgramCount = ProgramCount + 4;
+    
+    // for word addressable
+    assign nextProgramCount = ProgramCount + 1;
+       
 endmodule

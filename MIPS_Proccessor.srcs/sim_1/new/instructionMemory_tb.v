@@ -1,20 +1,18 @@
 `timescale 1ns / 1ps
 
 module instructionMemory_tb;
-
-    // inputs
     reg clk;
     reg rst;
     reg [31:0] address;
     
-    wire [31:0] data;   // output
+    wire [31:0] data;
 
     // instantiate
     instructionMemory instructionMemory_uut (
         .clk(clk),
         .rst(rst),
-        .address(address),
-        .data(data)
+        .address(address),  // input
+        .data(data)         // output
     );
 
     // clock
@@ -25,10 +23,7 @@ module instructionMemory_tb;
     end
 
     initial 
-    begin
-        $monitor("time %t, rst = %b, address = %h, data = %h", 
-        $time, rst, address, data);
-        
+    begin       
         // initialize
         rst = 1;
         address = 0;
@@ -46,5 +41,4 @@ module instructionMemory_tb;
         
         $finish;
     end
-
 endmodule

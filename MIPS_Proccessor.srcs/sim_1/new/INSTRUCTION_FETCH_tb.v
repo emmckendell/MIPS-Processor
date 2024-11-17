@@ -1,22 +1,24 @@
 `timescale 1ns / 1ps
 
-module INSTRUCTION_FETCH_tb;
-    
+module INSTRUCTION_FETCH_tb;  
     reg clk;
     reg rst;
-    // inputs
-    reg EX_MEM_PCSrc;
-    reg [31:0] EX_MEM_npc;
-    // outputs
+    
+    reg MEM_PCSrc;
+    reg [31:0] MEM_npc;
+    
     wire [31:0] IF_ID_instruction;
     wire [31:0] IF_ID_npc;
 
     // instantiate
+    
     INSTRUCTION_FETCH INSTRUCTION_FETCH_uut(
         .clk(clk),
         .rst(rst),
-        .EX_MEM_PCSrc(EX_MEM_PCSrc),
-        .EX_MEM_npc(EX_MEM_npc),
+        // input
+        .MEM_PCSrc(MEM_PCSrc),
+        .MEM_npc(MEM_npc),
+        // output
         .IF_ID_instruction(IF_ID_instruction),
         .IF_ID_npc(IF_ID_npc)
     );
@@ -28,36 +30,26 @@ module INSTRUCTION_FETCH_tb;
     end
     
     initial 
-    begin
-//        $monitor("time %t, pc = %h, npc = %h, dataOut = %h, IF_ID_instruction = %h, IF_ID_npc = %h", 
-//                 $time, 
-//                 INSTRUCTION_FETCH_uut.pc, 
-//                 INSTRUCTION_FETCH_uut.npc, 
-//                 INSTRUCTION_FETCH_uut.dataOut,
-//                 IF_ID_npc, 
-//                 IF_ID_instruction
-//                 );
-        
+    begin        
         rst = 1;
-        EX_MEM_PCSrc = 0;
-        EX_MEM_npc = 32'h0000_0000;
+        MEM_PCSrc = 0;
+        MEM_npc = 32'h0000_0000;
         #10;
 
         rst = 0; 
               
-        EX_MEM_PCSrc = 1;
-        EX_MEM_npc = 32'h0000_0004;
+        MEM_PCSrc = 1;
+        MEM_npc = 32'h0000_0002;
         #50;
         
-        EX_MEM_PCSrc = 0;
-        EX_MEM_npc = 32'h0000_0008;
+        MEM_PCSrc = 0;
+        MEM_npc = 32'h0000_0000;
         #50;
         
-        EX_MEM_PCSrc = 1;
-        EX_MEM_npc = 32'h0000_0008;
-        #50;     
+        MEM_PCSrc = 1;
+        MEM_npc = 32'h0000_000A;
+        #50;
         
         $finish;
     end
-
 endmodule

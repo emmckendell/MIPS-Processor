@@ -1,20 +1,18 @@
 `timescale 1ns / 1ps
 
 module programCounter_tb;
-
-    // inputs
     reg clk;
     reg rst;
-    reg [31:0] npc;
+    reg [31:0] nextProgramCount;
 
-    wire [31:0] pc; // output
+    wire [31:0] ProgramCount;
 
     // instantiate
     programCounter programCounter_uut (
         .clk(clk),
         .rst(rst),
-        .npc(npc),
-        .pc(pc)
+        .nextProgramCount(nextProgramCount),    // input
+        .ProgramCount(ProgramCount)             // output
     );
 
     // clock
@@ -26,21 +24,25 @@ module programCounter_tb;
     
     initial 
     begin
-        $monitor("time = %t, rst = %b, npc = %h, pc = %h", $time, rst, npc, pc);
-        
-        // initialize
         rst = 1;
-        npc = 32'h0000_0000;
+        nextProgramCount = 32'h0000_0000;
         #10;
         
         rst = 0; 
         
-        npc = 32'h0000_0008; #20; // pc = 0000_0008
-        npc = 32'h0000_0004; #20; // pc = 0000_0004
-        npc = 32'hFFFF_FFFF; #20; // pc = FFFF_FFFF
+        nextProgramCount = 32'h0000_0008; #20; 
+        // Expected: ProgramCount = 0000_0008
         
-        rst = 1; #20;       
+        nextProgramCount = 32'hA5A5_A5A5; #20; 
+        // Expected: ProgramCount = A5A5_A5A5
+        
+        nextProgramCount = 32'hF0F0_F0F0; #20; 
+        // Expected: ProgramCount = F0F0_F0F0
+        
+        nextProgramCount = 32'hFFFF_FFFF; #20; 
+        // Expected: ProgramCount = FFFF_FFFF
+        
+        rst = 1; #20;
         $finish;
-    end
-    
+    end   
 endmodule

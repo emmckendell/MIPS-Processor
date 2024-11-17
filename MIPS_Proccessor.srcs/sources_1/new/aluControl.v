@@ -25,8 +25,9 @@ module aluControl(
         case (ALUOp)
             2'b00: ALUControl = 3'b010; // lw/sw instructions (add)
             2'b01: ALUControl = 3'b110; // beq instructions (sub)
-            2'b10: 
-            begin                // R-type instructions
+            2'b10:
+            // R-type instructions (funct)
+            begin
                 case (funct)
                     6'b100000: ALUControl = 3'b010;  // add
                     6'b100010: ALUControl = 3'b110;  // sub

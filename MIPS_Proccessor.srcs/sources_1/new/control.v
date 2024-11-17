@@ -55,9 +55,9 @@ module control(
                 controlWB   = 2'b0x;   // RegWrite = 0, MemToReg = X
             end
             default: begin // unsupported opcodes
-                controlEX   = 4'b0000;
-                controlMEM  = 3'b000;
-                controlWB   = 2'b00;
+                controlEX   = 4'bxxxx;
+                controlMEM  = 3'bxxx;
+                controlWB   = 2'bxx;
             end
         endcase
     end

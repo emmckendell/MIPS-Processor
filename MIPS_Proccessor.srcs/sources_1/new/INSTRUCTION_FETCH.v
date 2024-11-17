@@ -4,8 +4,8 @@ module INSTRUCTION_FETCH(
     input clk,
     input rst,
     
-    input wire EX_MEM_PCSrc,
-    input wire [31:0] EX_MEM_npc,
+    input wire MEM_PCSrc,
+    input wire [31:0] MEM_npc,
     
     output wire [31:0] IF_ID_instruction,
     output wire [31:0] IF_ID_npc
@@ -18,13 +18,13 @@ module INSTRUCTION_FETCH(
     
     // instantiations
        
-    mux mux_PCSrc_INST(
+    mux_32bit mux_32bit_PCSrc_INST(
         // input: a = 1, b = 0
         
         // input
-        .a(EX_MEM_npc),
+        .a(MEM_npc),
         .b(nextProgramCount),
-        .sel(EX_MEM_PCSrc),
+        .sel(MEM_PCSrc),
         // output
         .y(PCSrcMux)
         );

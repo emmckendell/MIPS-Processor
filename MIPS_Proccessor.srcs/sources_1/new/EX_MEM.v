@@ -1,13 +1,14 @@
 `timescale 1ns / 1ps
 
 module EX_MEM(
-    input wire clk,
-    input wire rst,
+    input clk,
+    input rst,
     
     // control input
     input wire [2:0] controlMEM,    // [Branch, MemRead, MemWrite]
     input wire [1:0] controlWB,     // [RegWrite, MemToReg]
     input wire zeroFlag,
+    
     // control output
     output reg controlMEM_Branch,   // controlMEM[2]
     output reg controlMEM_MemRead,  // controlMEM[1]
@@ -24,7 +25,7 @@ module EX_MEM(
        
     // output
     output reg [31:0] npcMEM,
-    output reg [31:0] address,
+    output reg [31:0] addressMemory,
     output reg [31:0] writeDataMemory,
     output reg [4:0] writeRegister
     );
@@ -40,7 +41,7 @@ module EX_MEM(
         zeroFlagOut <= 0;
         
         npcMEM <= 0;
-        address <= 0;
+        addressMemory <= 0;
         writeDataMemory <= 0;
         writeRegister <= 0;
     end
@@ -58,7 +59,7 @@ module EX_MEM(
             zeroFlagOut <= 0;
             
             npcMEM <= 0;
-            address <= 0;
+            addressMemory <= 0;
             writeDataMemory <= 0;
             writeRegister <= 0;
         end
@@ -73,7 +74,7 @@ module EX_MEM(
             zeroFlagOut <= zeroFlag;
             
             npcMEM <= addResult;
-            address <= result;
+            addressMemory <= result;
             writeDataMemory <= readData_rt;
             writeRegister <= RegDstMux;
         end

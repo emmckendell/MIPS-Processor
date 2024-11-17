@@ -4,9 +4,9 @@ module EXECUTE(
     input clk,
     input rst,
     
-    input wire ID_EX_controlEX_RegDst,         // controlEX[3] (RegDst)
-    input wire [1:0] ID_EX_controlEX_ALUOp,    // controlEX[2:1] (ALUOp[1:0])
-    input wire ID_EX_controlEX_ALUSrc,         // controlEX[0] (ALUSrc)
+    input wire ID_EX_controlEX_RegDst,         // controlEX[3]
+    input wire [1:0] ID_EX_controlEX_ALUOp,    // controlEX[2:1]
+    input wire ID_EX_controlEX_ALUSrc,         // controlEX[0]
     input wire [2:0] ID_EX_controlMEM,         // [Branch, MemRead, MemWrite]
     input wire [1:0] ID_EX_controlWB,          // [RegWrite, MemToReg]
 
@@ -17,15 +17,15 @@ module EXECUTE(
     input wire [4:0] ID_EX_instruction_20_16,
     input wire [4:0] ID_EX_instruction_15_11,
     
-    output wire EX_MEM_controlMEM_Branch,       // controlMEM[2] (Branch)
-    output wire EX_MEM_controlMEM_MemRead,      // controlMEM[1] (MemRead)
-    output wire EX_MEM_controlMEM_MemWrite,     // controlMEM[0] (MemWrite)
-    output wire [1:0] EX_MEM_controlWB,
+    output wire EX_MEM_controlMEM_Branch,       // controlMEM[2]
+    output wire EX_MEM_controlMEM_MemRead,      // controlMEM[1]
+    output wire EX_MEM_controlMEM_MemWrite,     // controlMEM[0]
+    output wire [1:0] EX_MEM_controlWB,         // [RegWrite, MemToReg]
     
     output wire EX_MEM_zeroFlag, 
     
     output wire [31:0] EX_MEM_npc,   
-    output wire [31:0] EX_MEM_address,
+    output wire [31:0] EX_MEM_addressMemory,
     output wire [31:0] EX_MEM_writeDataMemory,
     output wire [4:0] EX_MEM_writeRegister
     );
@@ -53,12 +53,15 @@ module EXECUTE(
         );
     
     aluControl aluControl_INST(
-        .funct(ID_EX_signExtend[5:0]),  // input
-        .ALUOp(ID_EX_controlEX_ALUOp),  // control
-        .ALUControl(ALUSelect)          // output
+        // input
+        .funct(ID_EX_signExtend[5:0]),
+        // control
+        .ALUOp(ID_EX_controlEX_ALUOp),
+        // output
+        .ALUControl(ALUSelect)
         );
     
-    mux mux_ALUSrc_INST(
+    mux_32bit mux_32bit_ALUSrc_INST(
         // input: a = 1, b = 0
         
         // input
@@ -77,11 +80,11 @@ module EXECUTE(
         .A(ID_EX_readData_rs),      // first (source) register
         .B(ALUSrcMux),
         // output
-        .zero(ALU_zero),
+        .zero(zeroFlag),            // ALU_result = 0
         .ALUResult(ALU_result)
         );
     
-    mux mux_RegDst_INST(
+    mux_5bit mux_5bit_RegDst_INST(
          // input: a = 1, b = 0
         
         // input
@@ -99,27 +102,26 @@ module EXECUTE(
         
         // control input
         .controlMEM(ID_EX_controlMEM),  // split into three signals, used in MEM stage           
-        .controlWB(ID_EX_controlWB),
+        .controlWB(ID_EX_controlWB),    // [RegWrite, MemToReg]
         .zeroFlag(zeroFlag),
         
         // control output
         .controlMEM_Branch(EX_MEM_controlMEM_Branch),       // controlMEM[2] (Branch)
         .controlMEM_MemRead(EX_MEM_controlMEM_MemRead),     // controlMEM[1] (MemRead)
         .controlMEM_MemWrite(EX_MEM_controlMEM_MemWrite),   // controlMEM[0] (MemWrite)
-        .controlWBOut(EX_MEM_controlWB),
+        .controlWBOut(EX_MEM_controlWB),                    // [RegWrite, MemToReg]
         .zeroFlagOut(EX_MEM_zeroFlag),
         
         // input
         .addResult(ALU_addResult),
         .result(ALU_result),
-        .readData_rt(ID_EX_readData_rt),
+        .readData_rt(ID_EX_readData_rt),    // second register
         .RegDstMux(RegDstMux),
         
         // output
         .npcMEM(EX_MEM_npc),
-        .address(EX_MEM_address),
+        .address(EX_MEM_addressMemory),
         .writeDataMemory(EX_MEM_writeDataMemory),
         .writeRegister(EX_MEM_writeRegister)
-        );
-      
+        );     
 endmodule

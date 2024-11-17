@@ -6,9 +6,9 @@ module INSTRUCTION_DECODE(
     
     input wire [31:0] IF_ID_npc,
     input wire [31:0] IF_ID_instruction,
-    input wire [4:0] MEM_WB_writeRegister,
-    input wire [31:0] MEM_WB_writeDataRegister,
-    input wire EX_MEM_regWrite,                 // control
+    input wire [4:0] WB_writeRegister,
+    input wire [31:0] WB_writeDataRegister,
+    input wire WB_controlWB_RegWrite,           // control
     
     output wire ID_EX_controlEX_RegDst,         // controlEX[3] (RegDst)
     output wire [1:0] ID_EX_controlEX_ALUOp,    // controlEX[2:1] (ALUOp[1:0])
@@ -64,10 +64,10 @@ module INSTRUCTION_DECODE(
         // input
         .rs(IF_ID_instruction[25:21]),  // first (source) register
         .rt(IF_ID_instruction[20:16]),  // second register
-        .rd(MEM_WB_writeRegister),      // destination register
-        .writeDataRegister(MEM_WB_writeDataRegister),
+        .rd(WB_writeRegister),          // destination register
+        .writeDataRegister(WB_writeDataRegister),
         // control
-        .regWrite(EX_MEM_regWrite),
+        .RegWrite(WB_controlWB_RegWrite),
         // output
         .readData_rs(readData_rs),
         .readData_rt(readData_rt)
@@ -119,6 +119,5 @@ module INSTRUCTION_DECODE(
         .instructionSignExtend_15_0_Out(ID_EX_signExtend), // 32'hFFFF_xxxx OR 32'h0000_xxxx
         .instruction_20_16_Out(ID_EX_instruction_20_16),
         .instruction_15_11_Out(ID_EX_instruction_15_11)
-        );
-             
+        );            
 endmodule

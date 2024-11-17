@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 module IF_ID(
-    input wire clk,
-    input wire rst,
+    input clk,
+    input rst,
     
     // input
     input wire [31:0] nextProgramCount,

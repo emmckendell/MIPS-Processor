@@ -6,7 +6,7 @@ module registers(
      
     input wire [4:0] rs, rt, rd,
     input wire [31:0] writeDataRegister,
-    input wire regWrite,
+    input wire RegWrite,
     
     output wire [31:0] readData_rs, readData_rt,
     
@@ -48,8 +48,8 @@ module registers(
         end
         else 
         begin
-            // Write data to register if regWrite is enabled and rd is not $zero
-            if (regWrite && rd != 5'd0)
+            // Write data to register if RegWrite is enabled and rd is not $zero
+            if (RegWrite && rd != 5'd0)
                 registers[rd] <= writeDataRegister;
         end
     end

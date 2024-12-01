@@ -26,7 +26,7 @@ module EXECUTE_tb;
     
     
     wire [31:0] EX_MEM_npc;   
-    wire [31:0] EX_MEM_address;
+    wire [31:0] EX_MEM_addressMemory;
     wire [31:0] EX_MEM_writeDataMemory;
     wire [4:0] EX_MEM_writeRegister;
     
@@ -56,7 +56,7 @@ module EXECUTE_tb;
         .ID_EX_instruction_15_11(ID_EX_instruction_15_11),
         // output
         .EX_MEM_npc(EX_MEM_npc),
-        .EX_MEM_address(EX_MEM_address),
+        .EX_MEM_addressMemory(EX_MEM_addressMemory),
         .EX_MEM_writeDataMemory(EX_MEM_writeDataMemory),
         .EX_MEM_writeRegister(EX_MEM_writeRegister)
     );
@@ -78,49 +78,46 @@ module EXECUTE_tb;
         ID_EX_controlMEM = 3'b000;
         ID_EX_controlWB = 2'b00;
         
-        ID_EX_npc = 32'd0;
+        ID_EX_npc = 32'h0;
         ID_EX_readData_rs = 32'd0;
         ID_EX_readData_rt = 32'd0;
-        ID_EX_signExtend = 32'd0;
-        ID_EX_instruction_20_16 = 5'd0;
-        ID_EX_instruction_15_11 = 5'd0;
+        ID_EX_signExtend = 32'h0;
+        ID_EX_instruction_20_16 = 5'b0;
+        ID_EX_instruction_15_11 = 5'b0;
         #10;
         
         rst = 0; #10;
-
-        // $s0 = 0 + 3
-        // addi $s0, $zero, 3 | opcode=001000, rs=00000, rt=10000, immediate=0000_0000_0000_0011
-        ID_EX_controlEX_RegDst = 1;
-        ID_EX_controlEX_ALUOp = 2'b10; // Assume 10 corresponds to a "SUB" operation
-        ID_EX_controlEX_ALUSrc = 1;
-        ID_EX_controlMEM = 3'b101; // Branch = 1, MemRead = 0, MemWrite = 1
-        ID_EX_controlWB = 2'b11;   // RegWrite = 1, MemToReg = 1
         
-        ID_EX_npc = 32'd100;
-        ID_EX_readData_rs = 32'd15;
-        ID_EX_readData_rt = 32'd5;
-        ID_EX_signExtend = 32'd10;
-        ID_EX_instruction_20_16 = 5'd2;
-        ID_EX_instruction_15_11 = 5'd3;
-
-        #20;
-
-        // Test Case 2: Branch operation
-        ID_EX_controlEX_RegDst = 0;
-        ID_EX_controlEX_ALUOp = 2'b01; // Assume 01 corresponds to a "BEQ" operation
-        ID_EX_controlEX_ALUSrc = 0;
-        ID_EX_controlMEM = 3'b100; // Branch = 1, MemRead = 0, MemWrite = 0
-        ID_EX_controlWB = 2'b00;   // RegWrite = 0, MemToReg = 0
-        ID_EX_npc = 32'd200;
-        ID_EX_readData_rs = 32'd25;
-        ID_EX_readData_rt = 32'd25;
-        ID_EX_signExtend = 32'd4;
-        ID_EX_instruction_20_16 = 5'd4;
-        ID_EX_instruction_15_11 = 5'd5;
-
-        #20
-    
-    
+        // r-type instruction
+        ID_EX_controlEX_RegDst = 1'b1;
+        ID_EX_controlEX_ALUOp = 2'b10;  // r-type
+        ID_EX_controlEX_ALUSrc = 1'b0;
+        ID_EX_controlMEM = 3'b000;
+        ID_EX_controlWB = 2'b10;
+        
+        ID_EX_npc = 32'h0000_0001;
+        ID_EX_readData_rs = 32'd3;
+        ID_EX_readData_rt = 32'd2;
+        ID_EX_signExtend = 32'h0000_0800;
+        ID_EX_instruction_20_16 = 5'b01100;
+        ID_EX_instruction_15_11 = 5'b00001;
+        #10;
+        
+        // load (lw) instruction
+        ID_EX_controlEX_RegDst = 1'b0;
+        ID_EX_controlEX_ALUOp = 2'b00;  // add
+        ID_EX_controlEX_ALUSrc = 1'b1;
+        ID_EX_controlMEM = 3'b010;
+        ID_EX_controlWB = 2'b11;
+        
+        ID_EX_npc = 32'h0000_0002;
+        ID_EX_readData_rs = 32'd2;
+        ID_EX_readData_rt = 32'd3;
+        ID_EX_signExtend = 32'hFFFF_8800;
+        ID_EX_instruction_20_16 = 5'b10001;
+        ID_EX_instruction_15_11 = 5'b01110;
+        #10;
+               
         $finish;
     end   
 endmodule

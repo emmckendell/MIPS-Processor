@@ -42,13 +42,16 @@ module alu_tb;
         
         // or
         A = 32'hFFFF_0F00; B = 32'hFFFF_F000; ALUControl = 3'b001; #10;
+            
+        // slt: set less than
+        // slt (A < B)? (A less than B), false
+        A = 32'd6; B = 32'd8; ALUControl = 3'b111; #10;
+
+        // slt (A < B)? (A greater than B), true
+        A = 32'd8; B = 32'd6; ALUControl = 3'b111; #10;
         
-        // slt (A < B)? (A is less than B)
-        A = 32'd1; B = 32'd8; ALUControl = 3'b111; #10;
-
-        // slt (A < B)? (A is equal or greater than B)
-        A = 32'd8; B = 32'd1; ALUControl = 3'b111; #10;
-
+        // slt (A < B)? (A equal to B), true
+        A = 32'd6; B = 32'd6; ALUControl = 3'b111; #10;
         $finish;
     end
 endmodule

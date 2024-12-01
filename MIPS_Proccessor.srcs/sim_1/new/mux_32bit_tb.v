@@ -8,7 +8,7 @@ module mux_32bit_tb;
     
     // instantiate
     
-    mux mux_uut(
+    mux_32bit mux_32bit_uut(
         // input
         .a(a),
         .b(b),

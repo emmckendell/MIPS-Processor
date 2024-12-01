@@ -40,10 +40,10 @@ module EX_MEM_tb;
         .controlWBOut(controlWBOut),                // [RegWrite, MemToReg]
         .zeroFlagOut(zeroFlagOut),
         // input
-        .addResult(addResult),
-        .result(result),
-        .readData_rt(readData_rt),                  // second register
-        .RegDstMux(RegDstMux),
+        .addResult(addResult),                      // EX_MEM_npc
+        .result(result),                            // EX_MEM_addressMemory
+        .readData_rt(readData_rt),                  // EX_MEM_writeDataMemory
+        .RegDstMux(RegDstMux),                      // EX_MEM_writeRegister
         // output
         .npcMEM(npcMEM),
         .addressMemory(addressMemory),
@@ -59,40 +59,38 @@ module EX_MEM_tb;
     
     initial 
     begin
-        rst = 1; controlMEM = 3'b000; controlWB = 2'b00;
-        zeroFlag = 0; addResult = 32'h0000_0000; result = 32'h0000_0000;
-        readData_rt = 32'h0000_0000; RegDstMux = 5'b00000;
-        
-        // Apply reset
-        #10 rst = 0;
-
-        // Apply test case 1
-        #10;
-        controlMEM = 3'b101;      // Branch = 1, MemRead = 0, MemWrite = 1
-        controlWB = 2'b10;        // RegWrite = 1, MemToReg = 0
-        zeroFlag = 1;
-        addResult = 32'h1234_5678;
-        result = 32'hDEAD_BEEF;
-        readData_rt = 32'h8765_4321;
-        RegDstMux = 5'b10101;
-
-        // Test case 2
-        #10;
-        controlMEM = 3'b011;      // Branch = 0, MemRead = 1, MemWrite = 1
-        controlWB = 2'b01;        // RegWrite = 0, MemToReg = 1
+        rst = 1;
+        controlMEM = 3'b000;
+        controlWB = 2'b00;
         zeroFlag = 0;
-        addResult = 32'hABCD_1234;
-        result = 32'hCAFEBABE;
-        readData_rt = 32'h1234_5678;
-        RegDstMux = 5'b11011;
-
-        // Test case 3: Reset during operation
-        #10 rst = 1;
-        #10 rst = 0;
-
-        // End simulation
-        #50;
-        $stop;
+        
+        addResult = 32'h0000_0000;
+        result = 32'h0000_0000;
+        readData_rt = 32'h0000_0000;    
+        RegDstMux = 5'b00000;
+        
+        rst = 0; #10;
+        
+        controlMEM = 3'b010;
+        controlWB = 2'b11;
+        zeroFlag = 0;
+        
+        addResult = 32'hA5A5_A5A5;
+        result = 32'hFFFF_FFFF;
+        readData_rt = 32'hC3C3_C3C3;
+        RegDstMux = 5'b10100;
+        #10;
+        
+        controlMEM = 3'b001;
+        controlWB = 2'b0x;
+        zeroFlag = 1;
+        
+        addResult = 32'hD4D4_D4D4;
+        result = 32'h0000_0000;
+        readData_rt = 32'hB2_B2B2;
+        RegDstMux = 5'b01011;
+        #10;
+               
+        $finish;
     end
-
 endmodule

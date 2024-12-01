@@ -10,14 +10,14 @@ module registers_tb;
     wire [31:0] readData_rs;
     wire [31:0] readData_rt;
     
-    wire [31:0] register0, register1, register2, register3;
-    wire [31:0] register4, register5, register6, register7;
-    wire [31:0] register8, register9, register10, register11;
-    wire [31:0] register12, register13, register14, register15; 
-    wire [31:0] register16, register17, register18, register19;
-    wire [31:0] register20, register21, register22, register23;
-    wire [31:0] register24, register25, register26, register27;
-    wire [31:0] register28, register29, register30, register31;
+    wire [31:0] register0,  register1,  register2,  register3,
+                register4,  register5,  register6,  register7,
+                register8,  register9,  register10, register11,
+                register12, register13, register14, register15, 
+                register16, register17, register18, register19,
+                register20, register21, register22, register23,
+                register24, register25, register26, register27,
+                register28, register29, register30, register31;
     
     // instantiate
     
@@ -53,35 +53,41 @@ module registers_tb;
     
     initial 
     begin        
-        rst = 1; RegWrite = 1; rs = 5'd0; rt = 5'd0; rd = 5'd0; writeDataRegister = 32'h0000_0000; #10;
-        rst = 0;
+        rst = 1;
+        rs = 5'd0; 
+        rt = 5'd0; 
+        rd = 5'd0;
+        writeDataRegister = 32'h0000_0000;
+        RegWrite = 1; 
         #10;
+        
+        rst = 0; #10;
 
-        // write to register 1 (rd = 1)
+        // write to register1 ($r1) (rd = 1)
         rd = 5'd1; 
         writeDataRegister = 32'hA5A5_A5A5; 
         RegWrite = 1; 
-        #10; // write A5A5A5A5 to register 1
+        #10;
 
-        // read value from register 1 to rs and rt
+        // read value from register1 ($r1) to rs and rt
         rs = 5'd1; 
         rt = 5'd1; 
         #10;
         // Expected readData_rs = A5A5_A5A5, readData_rt = A5A5_A5A5
 
-        // write to register 2 (rd = 2)
+        // write to register2 (rd = 2)
         rd = 5'd2; 
         writeDataRegister = 32'hF0F0_F0F0; 
         RegWrite = 1; 
         #10;
 
-        // read value from register 2 to rs and register 1 to rt
+        // read value from register2 ($r2) to rs and register 1 to rt
         rs = 5'd2; 
         rt = 5'd1; 
         #10;
         // Expected readData_rs = F0F0_F0F0, readData_rt = A5A5_A5A5
         
-        // read value from register 1 to rs and register 2 to rt
+        // read value from register1 ($r1) to rs and register 2 to rt
         rs = 5'd1; 
         rt = 5'd2;
         // Expected readData_rs = A5A5_A5A5, readData_rt = F0F0_F0F0

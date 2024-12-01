@@ -32,6 +32,10 @@ module aluControl_tb;
 
         // unknown funct code
         ALUOp = 2'b10; funct = 6'b111111; #10; // Expected ALUControl = xxx
+        ALUOp = 2'b10; funct = 6'b111111; #10; // Expected ALUControl = xxx
+        
+        // unknown ALUOp
+        ALUOp = 2'b11; funct = 6'b100000; #10; // Expected ALUControl = xxx
         
         $finish;
     end

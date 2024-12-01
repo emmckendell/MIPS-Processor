@@ -24,6 +24,15 @@ module INSTRUCTION_DECODE_tb;
     wire [4:0] ID_EX_instruction_20_16;
     wire [4:0] ID_EX_instruction_15_11;
     
+    wire [31:0] register0, register1, register2, register3,
+                register4, register5, register6, register7,
+                register8, register9, register10, register11,
+                register12,register13, register14, register15,
+                register16, register17, register18, register19,
+                register20, register21, register22, register23,
+                register24, register25, register26, register27,
+                register28, register29, register30, register31;
+    
     // instantiate
     
     INSTRUCTION_DECODE INSTRUCTION_DECODE_uut(
@@ -34,7 +43,7 @@ module INSTRUCTION_DECODE_tb;
         .IF_ID_instruction(IF_ID_instruction),
         .WB_writeRegister(WB_writeRegister),
         .WB_writeDataRegister(WB_writeDataRegister),
-        .WB_RegWrite(WB_RegWrite),
+        .WB_controlWB_RegWrite(WB_controlWB_RegWrite),
         // control output
         .ID_EX_controlEX_RegDst(ID_EX_controlEX_RegDst),    // controlEX[3] (RegDst)
         .ID_EX_controlEX_ALUOp(ID_EX_controlEX_ALUOp),      // controlEX[2:1] (ALUOp[1:0])
@@ -47,9 +56,18 @@ module INSTRUCTION_DECODE_tb;
         .ID_EX_readData_rt(ID_EX_readData_rt),
         .ID_EX_signExtend(ID_EX_signExtend),
         .ID_EX_instruction_20_16(ID_EX_instruction_20_16),
-        .ID_EX_instruction_15_11(ID_EX_instruction_15_11)
+        .ID_EX_instruction_15_11(ID_EX_instruction_15_11),
+        
+        .register0(register0), .register1(register1), .register2(register2), .register3(register3),
+        .register4(register4), .register5(register5), .register6(register6), .register7(register7),
+        .register8(register8), .register9(register9), .register10(register10), .register11(register11),
+        .register12(register12), .register13(register13), .register14(register14), .register15(register15),
+        .register16(register16), .register17(register17), .register18(register18), .register19(register19),
+        .register20(register20), .register21(register21), .register22(register22), .register23(register23),
+        .register24(register24), .register25(register25), .register26(register26), .register27(register27),
+        .register28(register28), .register29(register29), .register30(register30), .register31(register31)
     );
-
+    
     // clock
     initial 
     begin
@@ -68,81 +86,80 @@ module INSTRUCTION_DECODE_tb;
         IF_ID_instruction = 32'b000000_00000_00000_0000_0000_0000_0000;
         WB_writeRegister = 5'd0;
         WB_writeDataRegister = 32'h0000_0000;
-        WB_RegWrite = 0;
+        WB_controlWB_RegWrite = 0;
         IF_ID_npc = 32'h0000_0000;
         #10;
         
-        rst = 0;
+        rst = 0; #10;
         
+        // $r16 = $zero + 3 | opcode=001000, rs=00000, rt=10000, immediate=0000_0000_0000_0011
+        IF_ID_npc = 32'h0000_0001;
+        IF_ID_instruction = 32'b001000_00000_10001_0000_0000_0000_0011;
+        #50;
         
-                          
+        // write to register 16 ($r16)
+        WB_writeRegister = 5'd16;
+        WB_writeDataRegister = 32'h0000_0003;
+        WB_controlWB_RegWrite = 1;
+        #50;
+        
+        // $r17 = $zero + 2 | opcode=001000, rs=00000, rt=10001, immediate=0000_0000_0000_0010
+        IF_ID_npc = 32'h0000_0002;
+        IF_ID_instruction = 32'b001000_00000_10001_00000_00000_000010;
+        #50;
+        
+        // write to register 17 ($r17)
+        WB_writeRegister = 5'd17;
+        WB_writeDataRegister = 32'h0000_0002;
+        WB_controlWB_RegWrite = 1;
+        #50;
+        
+        // $r18 = $r16 + $r17 | opcode=000000, rs=10000, rt=10001, rd=10010, shamt=00000, funct=100000
+        // $r18 = 3 + 2
+        IF_ID_npc = 32'h0000_0003;
+        IF_ID_instruction = 32'b000000_10000_10001_10010_00000_100000;
+        #50;
+        
+        // write to register 18 ($r18)
+        WB_writeRegister = 5'd18;
+        WB_writeDataRegister = 32'h0000_0005;
+        WB_controlWB_RegWrite = 1;
+        #50;
+        
+        // $r19 = $r16 - $r17 | opcode=000000, rs=10000, rt=10001, rd=10011, shamt=00000, funct=100010
+        // $r19 = 3 - 2
+        IF_ID_npc = 32'h0000_0004;
+        IF_ID_instruction = 32'b000000_10000_10001_10011_00000_100010;
+        #50;
+        
+        // write to register 19 ($r19)
+        WB_writeRegister = 5'd19;
+        WB_writeDataRegister = 32'h0000_0001;
+        WB_controlWB_RegWrite = 1;
+        #50;
+        
+        // memory[$r16 + 3] = $r18(32'h5) | opcode=101011, rs=10000, rt=10010, offset=0000_0000_0000_0011
+        // memory[3 + 3] = (32'h5)
+        IF_ID_npc = 32'h0000_0005;
+        IF_ID_instruction = 32'b101011_10000_10010_0000000000000011;
+        #50;
+                
+        // no write to register needed
+        WB_controlWB_RegWrite = 0; 
+        #50;
+        
+        // $r20 = memory[$r16 + 3] | opcode=100011, rs=10000, rt=10100, offset=0000_0000_0000_0010
+        // $r20 = memory[3 + 3](contains 32'h5)
+        IF_ID_npc = 32'h0000_0006;
+        IF_ID_instruction = 32'b100011_10000_10100_0000000000000011;
+        #50;
+        
+        // write to register 20 ($r20)
+        WB_writeRegister = 5'd20;
+        WB_writeDataRegister = 32'h0000_0005;  // assuming memory[$r16 + 3] contains 32'h5
+        WB_controlWB_RegWrite = 1;
+        #50;
+                  
         $finish;
     end
 endmodule
-             
-//        // $s0 = 0 + 3
-//        // addi $s0, $zero, 3 | opcode=001000, rs=00000, rt=10000, immediate=0000_0000_0000_0011
-//        IF_ID_npc = 32'h0000_0001;
-//        IF_ID_instruction = 32'b001000_00000_10000_0000000000000011;
-//        #50;
-
-//        // write to register $s0(register 16)
-//        WB_writeRegister = 5'd16; #10;
-//        WB_writeDataRegister = 32'h0000_0003;
-//        WB_RegWrite = 1;
-//        #50;
-
-//        // $s1 = 0 + 2
-//        // addi $s1, $zero, 2 | opcode=001000, rs=00000, rt=10001, immediate=0000_0000_0000_0010
-//        IF_ID_npc = 32'h0000_0002;
-//        IF_ID_instruction = 32'b001000_00000_10001_00000_00000_000010;
-//        #50;
-
-//        // write to register $s1 (register 17)
-//        WB_writeRegister = 5'd17; #10;
-//        WB_writeDataRegister = 32'h0000_0002;
-//        WB_RegWrite = 1;
-//        #50;
-
-//        // $s2 = $s1 + $s0
-//        // add $s2, $s1, $s1 | opcode=000000, rs=10000, rt=10001, rd=10010, shamt=00000, funct=100000
-//        IF_ID_npc = 32'h0000_0003;
-//        IF_ID_instruction = 32'b000000_10000_10001_10010_00000_100000;
-//        #50;
-
-//        // write to register $s2 (register 18)
-//        WB_writeRegister = 5'd18; #10;
-//        WB_writeDataRegister = 32'h0000_0005;
-//        WB_RegWrite = 1;
-//        #50;
-
-//        // store $s2(32'h5) to memory[$s0 + 3](3+3=6)
-//        // sw $s2, 2($s0) | opcode=101011, rs=10000, rt=10010, offset=0000_0000_0000_0011
-//        IF_ID_npc = 32'h0000_0004;
-//        IF_ID_instruction = 32'b101011_10000_10010_0000000000000011;
-//        #50;
-        
-//        // no write to register needed
-//        WB_RegWrite = 0; #50;
-
-//        // load from memory[$s0 + 3](3+3=6) to $s3
-//        // lw $s3, 2($s0) | opcode=100011, rs=10000, rt=10011, offset=0000_0000_0000_0010
-//        IF_ID_npc = 32'h0000_0005;
-//        IF_ID_instruction = 32'b100011_10000_10011_0000000000000011;
-//        #50;
-
-//        // write to register $s3 (register 19)
-//        WB_writeRegister = 5'd19; #10;
-//        WB_writeDataRegister = 32'h0000_0005;  // assuming memory[$s0 + 3](3+3=6) contains 5
-//        WB_RegWrite = 1;
-//        #50;
-        
-//        // read register 16 (3) register 17 (2)
-//        IF_ID_npc = 32'h0000_0006;
-//        IF_ID_instruction = 32'bxxxxxx_10000_10001_xxxxxxxxxxxxxxxx;
-//        #50;
-        
-//        // read register 18 (5) register 19 (5)
-//        IF_ID_npc = 32'h0000_0007;
-//        IF_ID_instruction = 32'bxxxxxx_10010_10011_xxxxxxxxxxxxxxxx;
-//        #50;

@@ -19,10 +19,10 @@ module INSTRUCTION_FETCH_tb;
         .MEM_PCSrc(MEM_PCSrc),
         .MEM_npc(MEM_npc),
         // output
-        .IF_ID_instruction(IF_ID_instruction),
-        .IF_ID_npc(IF_ID_npc)
+        .IF_ID_npc(IF_ID_npc),
+        .IF_ID_instruction(IF_ID_instruction)
     );
-
+    
     // clock
     initial begin
         clk = 0;

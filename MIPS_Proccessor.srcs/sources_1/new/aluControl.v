@@ -1,8 +1,9 @@
 `timescale 1ns / 1ps
 
 module aluControl(
-    input [5:0] funct,
-    input [1:0] ALUOp,
+    input wire[5:0] funct,
+    input wire [1:0] ALUOp,
+    
     output reg [2:0] ALUControl
     );
     

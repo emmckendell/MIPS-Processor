@@ -50,7 +50,7 @@ module MEM_WB(
             
             readData_memOut <= readData_mem;
             addressMemoryOut <= addressMemory;
-            writeRegisterOut <= writeRegisterOut;       
+            writeRegisterOut <= writeRegister;       
         end
     end
 endmodule

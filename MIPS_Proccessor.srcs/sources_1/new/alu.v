@@ -1,8 +1,9 @@
 `timescale 1ns / 1ps
 
 module alu(
-	input [2:0] ALUControl,
-	input [31:0] A, B,
+	input wire [2:0] ALUControl,
+	input wire [31:0] A, B,
+	
 	output wire zero,
 	output reg [31:0] ALUResult
 	);

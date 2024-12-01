@@ -7,8 +7,8 @@ module INSTRUCTION_FETCH(
     input wire MEM_PCSrc,
     input wire [31:0] MEM_npc,
     
-    output wire [31:0] IF_ID_instruction,
-    output wire [31:0] IF_ID_npc
+    output wire [31:0] IF_ID_npc,
+    output wire [31:0] IF_ID_instruction
     );
     
     wire [31:0] PCSrcMux;
@@ -56,9 +56,11 @@ module INSTRUCTION_FETCH(
     IF_ID IF_ID_INST(
         .clk(clk),
         .rst(rst),
+        
         //input
         .nextProgramCount(nextProgramCount),
         .instruction(dataOut),
+        
         // output
         .npcIDOut(IF_ID_npc),
         .instructionOut(IF_ID_instruction)

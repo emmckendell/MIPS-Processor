@@ -13,8 +13,8 @@ module WRITE_BACK(
     
     output wire WB_controlWB_RegWrite,
     
-    output wire WB_writeRegister,
-    output wire WB_writeDataRegister
+    output wire [4:0] WB_writeRegister,
+    output wire [31:0] WB_writeDataRegister
     );
     
     assign WB_controlWB_RegWrite = MEM_WB_controlWB_RegWrite;   // controlWB[1]

@@ -46,9 +46,9 @@ module EXECUTE(
         .ALUControl(3'b010),        // tied ALUControl to add
         // input
         .A(ID_EX_npc),
-        .B(ID_EX_signExtend),
+        .B(ID_EX_signExtend),       // 32 bits
         // output
-        .zero(),                    // *UNUSED*
+        .zero(),                    // *UNUSED!*
         .ALUResult(ALU_addResult)
         );
     
@@ -66,7 +66,7 @@ module EXECUTE(
         
         // input
         .a(ID_EX_signExtend),
-        .b(ID_EX_readData_rt),      // seond register
+        .b(ID_EX_readData_rt),      // second register
         // control
         .sel(ID_EX_controlEX_ALUSrc),
         // output
@@ -120,7 +120,7 @@ module EXECUTE(
         
         // output
         .npcMEM(EX_MEM_npc),
-        .address(EX_MEM_addressMemory),
+        .addressMemory(EX_MEM_addressMemory),
         .writeDataMemory(EX_MEM_writeDataMemory),
         .writeRegister(EX_MEM_writeRegister)
         );     

@@ -3,6 +3,7 @@
 module programCounter(
     input clk,
     input rst,
+    
     input wire [31:0] nextProgramCount,
     output reg [31:0] ProgramCount
     );

@@ -9,34 +9,35 @@ module instructionMemory(
     output reg [31:0] data
     );
     
-    reg [31:0] Memory[0:127];   // 128 words of 32-bit memory
+    reg [31:0] instruction[0:127];   // 128 words of 32-bit instruction
     
     initial 
     begin
-        
         // Machine code, create an assembler to write the MIPS ISA
-        // add up to 127 instructions
+        // up to 127 instructions      
         
-        Memory[0]  <= 'h0000_0000;
-        Memory[1]  <= 'h1000_0011;
-        Memory[2]  <= 'h2000_0022;
-        Memory[3]  <= 'h3000_0033;
-        Memory[4]  <= 'h4000_0044;
-        Memory[5]  <= 'h5000_0055;
-        Memory[6]  <= 'h6000_0066;
-        Memory[7]  <= 'h7000_0077;
-        Memory[8]  <= 'h8000_0088;
-        Memory[9]  <= 'h9000_0099;
-        Memory[10] <= 'hA000_00AA;
-        Memory[11] <= 'hB000_00BB;
-        Memory[12] <= 'hC000_00CC;
-        Memory[13] <= 'hD000_00DD;
-        Memory[14] <= 'hE000_00EE;
-        Memory[15] <= 'hF000_00FF;
+        instruction[0]  <= 'h0000_0000;
+        instruction[1]  <= 'h1000_0011;
+        instruction[2]  <= 'h2000_0022;
+        instruction[3]  <= 'h3000_0033;
+        instruction[4]  <= 'h4000_0044;
+        instruction[5]  <= 'h5000_0055;
+        instruction[6]  <= 'h6000_0066;
+        instruction[7]  <= 'h7000_0077;
+        instruction[8]  <= 'h8000_0088;
+        instruction[9]  <= 'h9000_0099;
+        instruction[10] <= 'hA000_00AA;
+        instruction[11] <= 'hB000_00BB;
+        instruction[12] <= 'hC000_00CC;
+        instruction[13] <= 'hD000_00DD;
+        instruction[14] <= 'hE000_00EE;
+        instruction[15] <= 'hF000_00FF;
         
-        // Memory[n]
+        // instruction[n]
         // . . .
-        // Memory[127]
+        // instruction[127]
+        
+//        $readmemh("instructions.mem", instruction);     
     end
     
     always @(posedge clk) 
@@ -44,6 +45,6 @@ module instructionMemory(
         if(rst)
             data <= 0;
         else
-            data <= Memory[address];    
+            data <= instruction[address];    
     end  
 endmodule

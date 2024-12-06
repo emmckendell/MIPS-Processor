@@ -9,8 +9,8 @@ module MEMORY(
     input wire EX_MEM_controlMEM_MemWrite,      // controlMEM[0] (MemWrite)
     
     input wire [1:0] EX_MEM_controlWB,          // [RegWrite, MemToReg]
-    
     input wire EX_MEM_zeroFlag,                 // ALU_result = 0
+    
     output wire MEM_PCSrc,
     
     input wire [31:0] EX_MEM_npc,

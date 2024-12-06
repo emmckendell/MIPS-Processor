@@ -34,7 +34,7 @@ module registers(
     initial 
     begin
         for (i = 0; i < 32; i = i + 1) 
-            registers[i] = 32'd0;
+            registers[i] = 32'h0000_0000;
     end
     
     // On every clock cycle, update registers, readData_rs, and readData_rt
@@ -44,7 +44,7 @@ module registers(
         begin
             // Reset all registers to 0
             for (i = 0; i < 32; i = i + 1) 
-                registers[i] <= 0;
+                registers[i] <= 32'h0000_0000;
         end
         else 
         begin

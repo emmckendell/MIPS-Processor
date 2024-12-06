@@ -119,9 +119,9 @@ module EXECUTE(
         .RegDstMux(RegDstMux),
         
         // output
-        .npcMEM(EX_MEM_npc),
-        .addressMemory(EX_MEM_addressMemory),
-        .writeDataMemory(EX_MEM_writeDataMemory),
-        .writeRegister(EX_MEM_writeRegister)
+        .npcMEM(EX_MEM_npc),                        // renamed from ALU_addResult
+        .addressMemory(EX_MEM_addressMemory),       // renamed from ALU_result
+        .writeDataMemory(EX_MEM_writeDataMemory),   // renamed from ID_EX_readData_rt
+        .writeRegister(EX_MEM_writeRegister)        // renamed from RegDstMux
         );     
 endmodule

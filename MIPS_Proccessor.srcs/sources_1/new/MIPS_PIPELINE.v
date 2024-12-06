@@ -1,21 +1,69 @@
 `timescale 1ns / 1ps
 
+/*
+Classic 5 stage MIPS Processor Pipeline
+
+Created by Ethan McKendell
+*/
+
 module MIPS_PIPELINE(
     input clk,
     input rst,
     
+    // INSTRUCTION FETCH
     output wire [31:0] IF_ID_npc,
     output wire [31:0] IF_ID_instruction,
     
-    output wire [31:0] register0, register1, register2, register3,
-                       register4, register5, register6, register7,
-                       register8, register9, register10, register11,
-                       register12,register13, register14, register15,
+    // INSTRUCTION DECODE
+    output wire ID_EX_controlEX_RegDst,         // controlEX[3] (RegDst)
+    output wire [1:0] ID_EX_controlEX_ALUOp,    // controlEX[2:1] (ALUOp[1:0])
+    output wire ID_EX_controlEX_ALUSrc,         // controlEX[0] (ALUSrc)
+    output wire [2:0] ID_EX_controlMEM,         // [Branch, MemRead, MemWrite]
+    output wire [1:0] ID_EX_controlWB,          // [RegWrite, MemToReg]
+    
+    output wire [31:0] ID_EX_npc,
+    output wire [31:0] ID_EX_readData_rs,       // first (source) register
+    output wire [31:0] ID_EX_readData_rt,       // second register
+    output wire [31:0] ID_EX_signExtend,
+    output wire [4:0] ID_EX_instruction_20_16,
+    output wire [4:0] ID_EX_instruction_15_11,
+
+    output wire [31:0] register0,  register1,  register2,  register3,
+                       register4,  register5,  register6,  register7,
+                       register8,  register9,  register10, register11,
+                       register12, register13, register14, register15,
                        register16, register17, register18, register19,
                        register20, register21, register22, register23,
                        register24, register25, register26, register27,
                        register28, register29, register30, register31,
                        
+    // EXECUTE
+
+    output wire EX_MEM_controlMEM_Branch,       // controlMEM[2]
+    output wire EX_MEM_controlMEM_MemRead,      // controlMEM[1]
+    output wire EX_MEM_controlMEM_MemWrite,     // controlMEM[0]
+    output wire [1:0] EX_MEM_controlWB,         // [RegWrite, MemToReg]
+    
+    output wire EX_MEM_zeroFlag, 
+    
+    output wire [31:0] EX_MEM_npc,   
+    output wire [31:0] EX_MEM_addressMemory,
+    output wire [31:0] EX_MEM_writeDataMemory,
+    output wire [4:0] EX_MEM_writeRegister,
+    
+    // MEMORY
+    output wire MEM_PCSrc,
+
+    output wire MEM_WB_controlWB_RegWrite,      // controlWB[1]
+    output wire MEM_WB_controlWB_MemToReg,      // controlWB[0]
+    
+    output wire [31:0] MEM_WB_readData_mem,
+    output wire [31:0] MEM_WB_addressMemory,
+    output wire [4:0] MEM_WB_writeRegister,
+    
+    output wire [31:0] MEM_npc,
+    
+ 
     output wire [31:0] memory0,   memory1,   memory2,   memory3,   memory4,   memory5,   memory6,   memory7,
                        memory8,   memory9,   memory10,  memory11,  memory12,  memory13,  memory14,  memory15,
                        memory16,  memory17,  memory18,  memory19,  memory20,  memory21,  memory22,  memory23,
@@ -47,24 +95,31 @@ module MIPS_PIPELINE(
                        memory224, memory225, memory226, memory227, memory228, memory229, memory230, memory231,
                        memory232, memory233, memory234, memory235, memory236, memory237, memory238, memory239,
                        memory240, memory241, memory242, memory243, memory244, memory245, memory246, memory247,
-                       memory248, memory249, memory250, memory251, memory252, memory253, memory254, memory255
+                       memory248, memory249, memory250, memory251, memory252, memory253, memory254, memory255,
+                       
+    // WRITE BACK
+
+   
+    output wire WB_controlWB_RegWrite,
+    
+    output wire [4:0] WB_writeRegister,
+    output wire [31:0] WB_writeDataRegister
+    
     );
     
-    INSTRUCTION_FETCH INSTRUCTION_FETCH_uut(
+    INSTRUCTION_FETCH INSTRUCTION_FETCH_INST(
         .clk(clk),
         .rst(rst),
-        // input
+        // control input
         .MEM_PCSrc(MEM_PCSrc),
+        // input
         .MEM_npc(MEM_npc),
         // output
         .IF_ID_npc(IF_ID_npc),
-        .IF_ID_instruction(IF_ID_instruction)
+        .IF_ID_instruction(IF_ID_instruction)      
     );
     
-//    wire [31:0] IF_ID_npc;
-//    wire [31:0] IF_ID_instruction;
-    
-    INSTRUCTION_DECODE INSTRUCTION_DECODE_uut(
+    INSTRUCTION_DECODE INSTRUCTION_DECODE_INST(
         .clk(clk),
         .rst(rst),
         // input
@@ -72,12 +127,13 @@ module MIPS_PIPELINE(
         .IF_ID_instruction(IF_ID_instruction),
         .WB_writeRegister(WB_writeRegister),
         .WB_writeDataRegister(WB_writeDataRegister),
+        // control input
         .WB_controlWB_RegWrite(WB_controlWB_RegWrite),
         // control output
         .ID_EX_controlEX_RegDst(ID_EX_controlEX_RegDst),    // controlEX[3] (RegDst)
         .ID_EX_controlEX_ALUOp(ID_EX_controlEX_ALUOp),      // controlEX[2:1] (ALUOp[1:0])
         .ID_EX_controlEX_ALUSrc(ID_EX_controlEX_ALUSrc),    // controlEX[0] (ALUSrc)
-        .ID_EX_controlMEM(ID_EX_controlMEM),                // [Branch, MemRead, MemWrite
+        .ID_EX_controlMEM(ID_EX_controlMEM),                // [Branch, MemRead, MemWrite]
         .ID_EX_controlWB(ID_EX_controlWB),                  // [RegWrite, MemToReg]
         // output
         .ID_EX_npc(ID_EX_npc),
@@ -87,9 +143,9 @@ module MIPS_PIPELINE(
         .ID_EX_instruction_20_16(ID_EX_instruction_20_16),
         .ID_EX_instruction_15_11(ID_EX_instruction_15_11),
         
-        .register0(register0), .register1(register1), .register2(register2), .register3(register3),
-        .register4(register4), .register5(register5), .register6(register6), .register7(register7),
-        .register8(register8), .register9(register9), .register10(register10), .register11(register11),
+        .register0(register0),   .register1(register1),   .register2(register2),   .register3(register3),
+        .register4(register4),   .register5(register5),   .register6(register6),   .register7(register7),
+        .register8(register8),   .register9(register9),   .register10(register10), .register11(register11),
         .register12(register12), .register13(register13), .register14(register14), .register15(register15),
         .register16(register16), .register17(register17), .register18(register18), .register19(register19),
         .register20(register20), .register21(register21), .register22(register22), .register23(register23),
@@ -97,21 +153,7 @@ module MIPS_PIPELINE(
         .register28(register28), .register29(register29), .register30(register30), .register31(register31)
     );
     
-//    wire ID_EX_controlEX_RegDst;
-//    wire [1:0] ID_EX_controlEX_ALUOp;
-//    wire ID_EX_controlEX_ALUSrc;
-    
-//    wire [2:0] ID_EX_controlMEM;
-//    wire [1:0] ID_EX_controlWB;
-    
-//    wire [31:0] ID_EX_npc;
-//    wire [4:0] ID_EX_readData_rs;
-//    wire [4:0] ID_EX_readData_rt;
-//    wire [31:0] ID_EX_signExtend;
-//    wire [4:0] ID_EX_instruction_20_16;
-//    wire [4:0] ID_EX_instruction_15_11;
-    
-    EXECUTE EXECUTE_uut(
+    EXECUTE EXECUTE_INST(
         .clk(clk),
         .rst(rst),
         // control input
@@ -134,26 +176,13 @@ module MIPS_PIPELINE(
         .ID_EX_instruction_20_16(ID_EX_instruction_20_16),
         .ID_EX_instruction_15_11(ID_EX_instruction_15_11),
         // output
-        .EX_MEM_npc(EX_MEM_npc),
-        .EX_MEM_addressMemory(EX_MEM_addressMemory),
-        .EX_MEM_writeDataMemory(EX_MEM_writeDataMemory),
-        .EX_MEM_writeRegister(EX_MEM_writeRegister)
+        .EX_MEM_npc(EX_MEM_npc),                            // aka ALU_addResult
+        .EX_MEM_addressMemory(EX_MEM_addressMemory),        // aka ALU_result
+        .EX_MEM_writeDataMemory(EX_MEM_writeDataMemory),    // aka ID_EX_readData_rt
+        .EX_MEM_writeRegister(EX_MEM_writeRegister)         // aka RegDstMux
     );
     
-//    wire EX_MEM_controlMEM_Branch;
-//    wire EX_MEM_controlMEM_MemRead;
-//    wire EX_MEM_controlMEM_MemWrite;
-    
-//    wire [1:0] EX_MEM_controlWB;
-    
-//    wire EX_MEM_zeroFlag;
-    
-//    wire [31:0] EX_MEM_npc;
-//    wire [31:0] EX_MEM_addressMemory;
-//    wire [31:0] EX_MEM_writeDataMemory;
-//    wire [4:0] EX_MEM_writeRegister;
-    
-    MEMORY MEMORY_uut(
+    MEMORY MEMORY_INST(
         .clk(clk),
         .rst(rst),
         // control input
@@ -167,10 +196,10 @@ module MIPS_PIPELINE(
         .MEM_WB_controlWB_MemToReg(MEM_WB_controlWB_MemToReg),      // controlWB[0]
         .MEM_PCSrc(MEM_PCSrc),
         // input
-        .EX_MEM_npc(EX_MEM_npc),
-        .EX_MEM_addressMemory(EX_MEM_addressMemory),
-        .EX_MEM_writeDataMemory(EX_MEM_writeDataMemory),
-        .EX_MEM_writeRegister(EX_MEM_writeRegister),
+        .EX_MEM_npc(EX_MEM_npc),                            // aka ALU_addResult
+        .EX_MEM_addressMemory(EX_MEM_addressMemory),        // aka ALU_result
+        .EX_MEM_writeDataMemory(EX_MEM_writeDataMemory),    // aka ID_EX_readData_rt
+        .EX_MEM_writeRegister(EX_MEM_writeRegister),        // aka RegDstMux
         // output
         .MEM_WB_readData_mem(MEM_WB_readData_mem),
         .MEM_WB_addressMemory(MEM_WB_addressMemory),
@@ -243,16 +272,7 @@ module MIPS_PIPELINE(
         .memory252(memory252), .memory253(memory253), .memory254(memory254), .memory255(memory255)
     );
     
-//    wire MEM_WB_controlWB_RegWrite;
-//    wire MEM_WB_controlWB_MemToReg;
-    
-//    wire MEM_PCSrc;
-    
-//    wire [31:0] MEM_WB_readData_mem;
-//    wire [31:0] MEM_WB_addressMemory;
-//    wire [4:0] MEM_WB_writeRegister;
-    
-    WRITE_BACK WRITE_BACK_uut (
+    WRITE_BACK WRITE_BACK_INST(
         .clk(clk),
         .rst(rst),
         // control input
@@ -268,10 +288,5 @@ module MIPS_PIPELINE(
         .WB_writeRegister(WB_writeRegister),
         .WB_writeDataRegister(WB_writeDataRegister)
     );
-    
-//    wire WB_controlWB_RegWrite;
-    
-//    wire [4:0] WB_writeRegister;
-//    wire [31:0] WB_writeDataRegister;
     
 endmodule

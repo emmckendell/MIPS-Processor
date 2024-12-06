@@ -50,133 +50,138 @@ module dataMemory(
     
     integer i;
     
-    // initialize all memory addresses to 0
+    // initialize all memory addresses to 0 then load
     initial 
     begin
         for (i = 0; i < 256; i = i + 1) 
-            memory[i] = 32'd0;
+            memory[i] = 32'h0000_0000;
+
+        $readmemb("memory1.mem", memory);  
     end
     
-    always @(posedge clk) 
+    always @(negedge clk)
     begin
         if (rst) 
         begin
-            for (i = 0; i < 256; i = i + 1)
-                memory[i] <= 32'b0;
+                memory[255] <= 32'hFFFF_FFFF;
         end 
         else 
         begin
-            // Write data to memory if MemWrite is enabled
-            if (MemWrite)
-                memory[addressMemory[7:0]] <= writeDataMemory;
             // Read data from memory if MemRead is enabled
             if (MemRead)
-                readData_mem <= memory[addressMemory[7:0]];
-            else
-                readData_mem <= 32'h0000_0000;
+            begin
+                readData_mem <= memory[addressMemory[7:0]]; 
+            // Read data from memory if MemRead is enabled
+            end
+            
+            // Write data to memory if MemWrite is enabled
+            if (MemWrite)
+            begin
+                memory[addressMemory[7:0]] <= writeDataMemory;
+            end
         end
-    end 
+    end
     
-    assign memory0  = memory[0];
-	assign memory1  = memory[1];
-	assign memory2  = memory[2];
-	assign memory3  = memory[3];
-	assign memory4  = memory[4];
-	assign memory5  = memory[5];
-	assign memory6  = memory[6];
-	assign memory7  = memory[7];
-	assign memory8  = memory[8];
-	assign memory9  = memory[9];
-	assign memory10 = memory[10];
-	assign memory11 = memory[11];
-	assign memory12 = memory[12];
-	assign memory13 = memory[13];
-	assign memory14 = memory[14];
-	assign memory15 = memory[15];
-	assign memory16 = memory[16];
-	assign memory17 = memory[17];
-	assign memory18 = memory[18];
-	assign memory19 = memory[19];
-	assign memory20 = memory[20];
-	assign memory21 = memory[21];
-	assign memory22 = memory[22];
-	assign memory23 = memory[23];
-	assign memory24 = memory[24];
-	assign memory25 = memory[25];
-	assign memory26 = memory[26];
-	assign memory27 = memory[27];
-	assign memory28 = memory[28];
-	assign memory29 = memory[29];
-	assign memory30 = memory[30];
-	assign memory31 = memory[31];
-	assign memory32 = memory[32];
-	assign memory33 = memory[33];
-	assign memory34 = memory[34];
-	assign memory35 = memory[35];
-	assign memory36 = memory[36];
-	assign memory37 = memory[37];
-	assign memory38 = memory[38];
-	assign memory39 = memory[39];
-	assign memory40 = memory[40];
-	assign memory41 = memory[41];
-	assign memory42 = memory[42];
-	assign memory43 = memory[43];
-	assign memory44 = memory[44];
-	assign memory45 = memory[45];
-	assign memory46 = memory[46];
-	assign memory47 = memory[47];
-	assign memory48 = memory[48];
-	assign memory49 = memory[49];
-	assign memory50 = memory[50];
-	assign memory51 = memory[51];
-	assign memory52 = memory[52];
-	assign memory53 = memory[53];
-	assign memory54 = memory[54];
-	assign memory55 = memory[55];
-	assign memory56 = memory[56];
-	assign memory57 = memory[57];
-	assign memory58 = memory[58];
-	assign memory59 = memory[59];
-	assign memory60 = memory[60];
-	assign memory61 = memory[61];
-	assign memory62 = memory[62];
-	assign memory63 = memory[63];
-	assign memory64 = memory[64];
-	assign memory65 = memory[65];
-	assign memory66 = memory[66];
-	assign memory67 = memory[67];
-	assign memory68 = memory[68];
-	assign memory69 = memory[69];
-	assign memory70 = memory[70];
-	assign memory71 = memory[71];
-	assign memory72 = memory[72];
-	assign memory73 = memory[73];
-	assign memory74 = memory[74];
-	assign memory75 = memory[75];
-	assign memory76 = memory[76];
-	assign memory77 = memory[77];
-	assign memory78 = memory[78];
-	assign memory79 = memory[79];
-	assign memory80 = memory[80];
-	assign memory81 = memory[81];
-	assign memory82 = memory[82];
-	assign memory83 = memory[83];
-	assign memory84 = memory[84];
-	assign memory85 = memory[85];
-	assign memory86 = memory[86];
-	assign memory87 = memory[87];
-	assign memory88 = memory[88];
-	assign memory89 = memory[89];
-	assign memory90 = memory[90];
-	assign memory91 = memory[91];
-	assign memory92 = memory[92];
-	assign memory93 = memory[93];
-	assign memory94 = memory[94];
-	assign memory95 = memory[95];
-	assign memory96 = memory[96];
-	assign memory97 = memory[97];
-	assign memory98 = memory[98];
-	assign memory99 = memory[99];
+    assign memory0   = memory[0];
+	assign memory1   = memory[1];
+	assign memory2   = memory[2];
+	assign memory3   = memory[3];
+	assign memory4   = memory[4];
+	assign memory5   = memory[5];
+	assign memory6   = memory[6];
+	assign memory7   = memory[7];
+	assign memory8   = memory[8];
+	assign memory9   = memory[9];
+	assign memory10  = memory[10];
+	assign memory11  = memory[11];
+	assign memory12  = memory[12];
+	assign memory13  = memory[13];
+	assign memory14  = memory[14];
+	assign memory15  = memory[15];
+	assign memory16  = memory[16];
+	assign memory17  = memory[17];
+	assign memory18  = memory[18];
+	assign memory19  = memory[19];
+	assign memory20  = memory[20];
+	assign memory21  = memory[21];
+	assign memory22  = memory[22];
+	assign memory23  = memory[23];
+	assign memory24  = memory[24];
+	assign memory25  = memory[25];
+	assign memory26  = memory[26];
+	assign memory27  = memory[27];
+	assign memory28  = memory[28];
+	assign memory29  = memory[29];
+	assign memory30  = memory[30];
+	assign memory31  = memory[31];
+	assign memory32  = memory[32];
+	assign memory33  = memory[33];
+	assign memory34  = memory[34];
+	assign memory35  = memory[35];
+	assign memory36  = memory[36];
+	assign memory37  = memory[37];
+	assign memory38  = memory[38];
+	assign memory39  = memory[39];
+	assign memory40  = memory[40];
+	assign memory41  = memory[41];
+	assign memory42  = memory[42];
+	assign memory43  = memory[43];
+	assign memory44  = memory[44];
+	assign memory45  = memory[45];
+	assign memory46  = memory[46];
+	assign memory47  = memory[47];
+	assign memory48  = memory[48];
+	assign memory49  = memory[49];
+	assign memory50  = memory[50];
+	assign memory51  = memory[51];
+	assign memory52  = memory[52];
+	assign memory53  = memory[53];
+	assign memory54  = memory[54];
+	assign memory55  = memory[55];
+	assign memory56  = memory[56];
+	assign memory57  = memory[57];
+	assign memory58  = memory[58];
+	assign memory59  = memory[59];
+	assign memory60  = memory[60];
+	assign memory61  = memory[61];
+	assign memory62  = memory[62];
+	assign memory63  = memory[63];
+	assign memory64  = memory[64];
+	assign memory65  = memory[65];
+	assign memory66  = memory[66];
+	assign memory67  = memory[67];
+	assign memory68  = memory[68];
+	assign memory69  = memory[69];
+	assign memory70  = memory[70];
+	assign memory71  = memory[71];
+	assign memory72  = memory[72];
+	assign memory73  = memory[73];
+	assign memory74  = memory[74];
+	assign memory75  = memory[75];
+	assign memory76  = memory[76];
+	assign memory77  = memory[77];
+	assign memory78  = memory[78];
+	assign memory79  = memory[79];
+	assign memory80  = memory[80];
+	assign memory81  = memory[81];
+	assign memory82  = memory[82];
+	assign memory83  = memory[83];
+	assign memory84  = memory[84];
+	assign memory85  = memory[85];
+	assign memory86  = memory[86];
+	assign memory87  = memory[87];
+	assign memory88  = memory[88];
+	assign memory89  = memory[89];
+	assign memory90  = memory[90];
+	assign memory91  = memory[91];
+	assign memory92  = memory[92];
+	assign memory93  = memory[93];
+	assign memory94  = memory[94];
+	assign memory95  = memory[95];
+	assign memory96  = memory[96];
+	assign memory97  = memory[97];
+	assign memory98  = memory[98];
+	assign memory99  = memory[99];
 	assign memory100 = memory[100];
 	assign memory101 = memory[101];
 	assign memory102 = memory[102];

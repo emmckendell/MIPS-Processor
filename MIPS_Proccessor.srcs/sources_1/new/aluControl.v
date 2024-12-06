@@ -8,26 +8,17 @@ module aluControl(
     );
     
     // Instructions ALU Control Signals:
-    // ALUOp, funct, ALUControl
-    
-    // lw,      lw, add:    00_xxxxxx_010
-    // sw,      sw, add:    00_xxxxxx_010
-    
-    // beq,    beq, sub:    01_xxxxxx_110
-    
-    // R-type, add, add:    10_100000_010
-    // R-type, sub, sub:    10_100010_110
-    // R-type, and, and:    10_100100_000
-    // R-type,  or,  or:    10_100101_001
-    // R-type, slt, slt:    10_101010_111
+    // ALUControl
 
-    always @(funct, ALUOp) 
+    always @(funct, ALUOp)
     begin
         case (ALUOp)
+            // lw/sw, beq instructions (funct - xxxxxx)
             2'b00: ALUControl = 3'b010; // lw/sw instructions (add)
             2'b01: ALUControl = 3'b110; // beq instructions (sub)
+            
+            // r-type instruction (funct - instruction[6:0])
             2'b10:
-            // R-type instructions (funct)
             begin
                 case (funct)
                     6'b100000: ALUControl = 3'b010;  // add
@@ -35,10 +26,10 @@ module aluControl(
                     6'b100100: ALUControl = 3'b000;  // and
                     6'b100101: ALUControl = 3'b001;  // or
                     6'b101010: ALUControl = 3'b111;  // slt (Set Less Than), (A < B)
-                    default:   ALUControl = 3'bxxx;
+                    default:   ALUControl = 3'b000;
                 endcase
             end
-            default: ALUControl = 3'bxxx;
+            default: ALUControl = 3'b000;
         endcase
     end
 endmodule

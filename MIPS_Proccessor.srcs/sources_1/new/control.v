@@ -23,6 +23,7 @@ module control(
     end
     
     // Control signals:
+    // {controlEX, controlMEM, controlWB}
     
     // EX signals
     // controlEX[3] - RegDst
@@ -38,14 +39,6 @@ module control(
     // controlWB[1] - MemToReg
     // controlWB[0] - RegWrite
     
-    // Instructions Control Signals:
-    // {controlEX, controlMEM, controlWB}
-    
-    // R-type (opcode 0)  : 1100_000_10
-    // lw     (opcode 35) : 0001_010_11
-    // sw     (opcode 43) : x001_001_0x
-    // beq    (opcode 4)  : x010_100_0x
-
     always @(opcode) begin
         case (opcode)
             r_type: begin // R-type instruction (funct - instruction[6:0]) (opcode 0)
@@ -73,15 +66,15 @@ module control(
                 controlMEM = 3'b000;  // Branch = 0, MemRead = x, MemWrite = 0
                 controlWB  = 2'b10;   // RegWrite = 1, MemToReg = 0
             end
-            nop: begin // nop (no operation)
+            nop: begin // nop (no operation) instruction (opcode 32)
+                controlEX  = 4'b0000; // RegDst = 0, ALUOp = 00 (add), ALUSrc = 0
+                controlMEM = 3'b000;  // Branch = 0, MemRead = 0, MemWrite = 0
+                controlWB  = 2'b00;   // RegWrite = 0, MemToReg = 0
+            end
+            default: begin // unsupported opcodes
                 controlEX  = 4'b0000;
                 controlMEM = 3'b000;
                 controlWB  = 2'b00;
-            end
-            default: begin // unsupported opcodes
-                controlEX  = 4'bxxxx;
-                controlMEM = 3'bxxx;
-                controlWB  = 2'bxx;
             end
         endcase
     end

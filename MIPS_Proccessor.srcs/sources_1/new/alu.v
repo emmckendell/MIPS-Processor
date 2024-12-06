@@ -11,7 +11,7 @@ module alu(
     // zero flag
 	assign zero = (ALUResult == 32'b0);
     
-    always @(A, B, ALUControl)
+    always @(ALUControl, A, B)
     begin
 		case (ALUControl)
 			3'b010: ALUResult = A + B;                      // add

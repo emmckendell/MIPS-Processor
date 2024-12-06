@@ -10,5 +10,5 @@ module branch(
     output wire y
     );
     
-    and (y, a, b);
+    assign y = a & b;
 endmodule

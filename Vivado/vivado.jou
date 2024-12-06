@@ -1,0 +1,38 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Thu Nov 21 13:43:33 2024
+# Process ID: 14912
+# Current directory: C:/Users/emmck/OneDrive/Documents/Fall 2024/ECE4300/MIPS_Proccessor
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent22012 C:\Users\emmck\OneDrive\Documents\Fall 2024\ECE4300\MIPS_Proccessor\MIPS_Proccessor.xpr
+# Log file: C:/Users/emmck/OneDrive/Documents/Fall 2024/ECE4300/MIPS_Proccessor/vivado.log
+# Journal file: C:/Users/emmck/OneDrive/Documents/Fall 2024/ECE4300/MIPS_Proccessor\vivado.jou
+# Running On        :emm
+# Platform          :Windows Server 2016 or Windows 10
+# Operating System  :22631
+# Processor Detail  :Intel(R) Core(TM) i5-1035G4 CPU @ 1.10GHz
+# CPU Frequency     :1498 MHz
+# CPU Physical cores:4
+# CPU Logical cores :8
+# Host memory       :8350 MB
+# Swap memory       :10174 MB
+# Total Virtual     :18525 MB
+# Available Virtual :7477 MB
+#-----------------------------------------------------------
+start_gui
+open_project {C:/Users/emmck/OneDrive/Documents/Fall 2024/ECE4300/MIPS_Proccessor/MIPS_Proccessor.xpr}
+open_project {C:/Users/emmck/OneDrive/Documents/Fall 2024/ECE4300/MIPS_Proccessor/MIPS_Proccessor.xpr}
+update_compile_order -fileset sources_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top INSTRUCTION_DECODE_tb [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+launch_simulation
+launch_simulation
+source INSTRUCTION_DECODE_tb.tcl
+close_sim

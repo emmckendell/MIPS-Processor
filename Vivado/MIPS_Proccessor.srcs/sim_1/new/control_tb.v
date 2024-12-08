@@ -19,16 +19,19 @@ module control_tb;
     );
 
     initial 
-    begin        
+    begin
+        $monitor("Time = %0t, opcode = %b, controlEX = %b, controlMEM = %b, controlWB = %b", 
+        $time, opcode, controlEX, controlMEM, controlWB);
+           
         // R-type instruction (opcode 0)
         opcode = 6'b000000; #10;
         // expected: controlEX = 4'b1100, controlMEM = 3'b000, controlWB = 2'b10
 
-        // lw (load word) instruction (opcode 35)
+        // lw (load) instruction (opcode 35)
         opcode = 6'b100011; #10;
         // Expected: controlEX = 4'b0001, controlMEM = 3'b010, controlWB = 2'b11
 
-        // sw (store word) instruction (opcode 43)
+        // sw (store) instruction (opcode 43)
         opcode = 6'b101011; #10;
         // Expected: controlEX = 4'bx001, controlMEM = 3'b001, controlWB = 2'b0x
 

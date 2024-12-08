@@ -15,6 +15,9 @@ module aluControl_tb;
     
     initial 
     begin
+        $monitor("Time = %0t, funct = %b, ALUOp = %b, ALUControl = %b", 
+        $time, funct, ALUOp, ALUControl);
+        
         // lw/sw instructions (ALUOp = 00)
         ALUOp = 2'b00; funct = 6'bxxxxxx; #10;  
         // Expected ALUControl = 010 (add)

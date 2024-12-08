@@ -23,8 +23,10 @@ module instructionMemory_tb;
     end
 
     initial 
-    begin       
-        // initialize
+    begin
+        $monitor("Time = %0t, clk = %b, rst = %b, address = %h, data = %h", 
+        $time, clk, rst, address, data);
+        
         rst = 1;
         address = 0;
         #10;

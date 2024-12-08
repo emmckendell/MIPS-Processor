@@ -35,9 +35,9 @@ module registers_tb;
         .readData_rs(readData_rs),
         .readData_rt(readData_rt),
         
-        .register0(register0), .register1(register1), .register2(register2), .register3(register3),
-        .register4(register4), .register5(register5), .register6(register6), .register7(register7),
-        .register8(register8), .register9(register9), .register10(register10), .register11(register11),
+        .register0(register0),   .register1(register1),   .register2(register2),   .register3(register3),
+        .register4(register4),   .register5(register5),   .register6(register6),   .register7(register7),
+        .register8(register8),   .register9(register9),   .register10(register10), .register11(register11),
         .register12(register12), .register13(register13), .register14(register14), .register15(register15),
         .register16(register16), .register17(register17), .register18(register18), .register19(register19),
         .register20(register20), .register21(register21), .register22(register22), .register23(register23),
@@ -46,13 +46,17 @@ module registers_tb;
     );
 
     // clock
-    initial begin
+    initial 
+    begin
         clk = 0;
         forever #5 clk = ~clk;  // 5 time units
     end
     
     initial 
-    begin        
+    begin
+        $monitor("Time = %0t, clk = %b, rst = %b, rs = %d, rt = %d, rd = %d, writeDataRegister = %h, RegWrite = %b, readData_rs = %h, readData_rt = %h", 
+        $time, clk, rst, rs, rt, rd, writeDataRegister, RegWrite, readData_rs, readData_rt);
+            
         rst = 1;
         rs = 5'd0; 
         rt = 5'd0; 

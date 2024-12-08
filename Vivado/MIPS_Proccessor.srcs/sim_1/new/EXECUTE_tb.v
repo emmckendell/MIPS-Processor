@@ -70,7 +70,6 @@ module EXECUTE_tb;
     
     initial
     begin
-        
         rst = 1;
         ID_EX_controlEX_RegDst = 1'b0;
         ID_EX_controlEX_ALUOp = 2'b00;

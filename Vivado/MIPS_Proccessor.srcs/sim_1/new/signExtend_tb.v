@@ -13,6 +13,8 @@ module signExtend_tb;
     
     initial 
     begin
+        $monitor("Time = %0t, inUnextend_16b = %b, outExtend_32b = %b", 
+        $time, inUnextend_16b, outExtend_32b);
         
         // extend 0's
         inUnextend_16b = 16'b0111_1111_1111_1111; #10;

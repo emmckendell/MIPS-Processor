@@ -24,6 +24,7 @@ module programCounter_tb;
     
     initial 
     begin
+        
         rst = 1;
         nextProgramCount = 32'h0000_0000;
         #10;

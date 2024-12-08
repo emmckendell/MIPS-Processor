@@ -8,9 +8,9 @@ module branch_tb;
     
     wire y;
     
-    branch branch_INST(
-        .a(a), 
-        .b(b), 
+    branch branch_uut(
+        .a(a),
+        .b(b),
         .y(y)
     );
     

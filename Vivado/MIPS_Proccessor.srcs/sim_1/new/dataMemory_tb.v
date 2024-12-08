@@ -127,13 +127,17 @@ module dataMemory_tb;
     );
     
     // clock
-    initial begin
+    initial 
+    begin
         clk = 0;
         forever #5 clk = ~clk;  // 5 time units
     end
     
     initial 
     begin
+        $monitor("Time = %0t, clk = %b, rst = %b, addressMemory = %h, writeDataMemory = %h, MemWrite = %b, MemRead = %b, readData_mem = %h", 
+        $time, clk, rst, addressMemory, writeDataMemory, MemWrite, MemRead, readData_mem);
+        
         rst = 1;
         MemWrite = 0;
         MemRead = 0;

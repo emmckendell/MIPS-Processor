@@ -219,7 +219,7 @@ module MIPS_PIPELINE_tb;
         
         .WB_writeRegister(WB_writeRegister),
         .WB_writeDataRegister(WB_writeDataRegister)
-        
+         
     );
 
     // clock

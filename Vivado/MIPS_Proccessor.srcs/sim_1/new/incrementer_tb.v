@@ -14,6 +14,8 @@ module incrementer_tb;
 
     initial
     begin
+        $monitor("Time = %0t, ProgramCount = %h, nextProgramCount = %h", 
+        $time, ProgramCount, nextProgramCount);
         
         ProgramCount = 32'h0000_0000; #10;
         // Expected: nextProgramCount = 0000_0001

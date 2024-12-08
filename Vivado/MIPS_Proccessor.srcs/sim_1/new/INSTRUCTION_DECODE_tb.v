@@ -77,8 +77,7 @@ module INSTRUCTION_DECODE_tb;
     
     initial 
     begin
-        rst = 1;
-        
+        rst = 1; 
         // i-format: opcode(0)_rs_rt_rd_shamt_funct
         // j-format: opcode(35/43)_rs_rt_address
         // r-format: opcode(4)_rs_rt_address

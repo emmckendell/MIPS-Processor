@@ -20,6 +20,9 @@ module mux_32bit_tb;
     
     initial
     begin
+        $monitor("Time = %0t, a = %h, b = %h, sel = %b, y = %h", 
+        $time, a, b, sel, y);
+        
         a = 32'hAAAA_AAAA;
         b = 32'hBBBB_BBBB;
         sel = 1'b1;

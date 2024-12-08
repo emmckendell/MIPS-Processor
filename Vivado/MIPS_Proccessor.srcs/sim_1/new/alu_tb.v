@@ -21,7 +21,10 @@ module alu_tb;
     );
     
     initial 
-        begin       
+        begin
+        $monitor("Time = %0t, ALUControl = %b, A = %h, B = %h, ALUResult = %h, zero = %b", 
+        $time, ALUControl, A, B, ALUResult, zero);
+             
         // add
         A = 32'd5; B = 32'd4; ALUControl = 3'b010; #10;
         

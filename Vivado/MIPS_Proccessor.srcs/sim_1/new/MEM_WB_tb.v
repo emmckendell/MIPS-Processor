@@ -34,7 +34,8 @@ module MEM_WB_tb;
     );
 
     // clock
-    initial begin
+    initial 
+    begin
         clk = 0;
         forever #5 clk = ~clk;  // 5 time units
     end

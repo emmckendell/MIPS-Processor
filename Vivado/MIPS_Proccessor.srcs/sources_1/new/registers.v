@@ -4,7 +4,9 @@ module registers(
     input clk,
     input rst,
      
-    input wire [4:0] rs, rt, rd,
+    input wire [4:0] rs, // register source
+                     rt, // register target
+                     rd, // register destination
     input wire [31:0] writeDataRegister,
     input wire RegWrite,
     

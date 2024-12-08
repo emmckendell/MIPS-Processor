@@ -27,7 +27,8 @@ module MIPS_PIPELINE(
     output wire [31:0] ID_EX_signExtend,
     output wire [4:0] ID_EX_instruction_20_16,
     output wire [4:0] ID_EX_instruction_15_11,
-
+    
+    // registers
     output wire [31:0] register0,  register1,  register2,  register3,
                        register4,  register5,  register6,  register7,
                        register8,  register9,  register10, register11,
@@ -38,7 +39,6 @@ module MIPS_PIPELINE(
                        register28, register29, register30, register31,
                        
     // EXECUTE
-
     output wire EX_MEM_controlMEM_Branch,       // controlMEM[2]
     output wire EX_MEM_controlMEM_MemRead,      // controlMEM[1]
     output wire EX_MEM_controlMEM_MemWrite,     // controlMEM[0]
@@ -63,7 +63,7 @@ module MIPS_PIPELINE(
     
     output wire [31:0] MEM_npc,
     
- 
+    // memory addresses
     output wire [31:0] memory0,   memory1,   memory2,   memory3,   memory4,   memory5,   memory6,   memory7,
                        memory8,   memory9,   memory10,  memory11,  memory12,  memory13,  memory14,  memory15,
                        memory16,  memory17,  memory18,  memory19,  memory20,  memory21,  memory22,  memory23,
@@ -98,8 +98,6 @@ module MIPS_PIPELINE(
                        memory248, memory249, memory250, memory251, memory252, memory253, memory254, memory255,
                        
     // WRITE BACK
-
-   
     output wire WB_controlWB_RegWrite,
     
     output wire [4:0] WB_writeRegister,
@@ -107,13 +105,13 @@ module MIPS_PIPELINE(
     
     );
     
-    INSTRUCTION_FETCH INSTRUCTION_FETCH_INST(
+    INSTRUCTION_FETCH INSTRUCTION_FETCH_uut(
         .clk(clk),
         .rst(rst),
-        // control input
-        .MEM_PCSrc(MEM_PCSrc),
         // input
         .MEM_npc(MEM_npc),
+        // control input
+        .MEM_PCSrc(MEM_PCSrc),
         // output
         .IF_ID_npc(IF_ID_npc),
         .IF_ID_instruction(IF_ID_instruction)      

@@ -1,5 +1,10 @@
 `timescale 1ns / 1ps
 
+/*
+    Contains up to 127 32-bit instructions
+    Reads from 
+*/
+
 module instructionMemory(
     input clk,
     input rst,
@@ -11,7 +16,7 @@ module instructionMemory(
     
     reg [31:0] instruction[0:127];   // 128 words of 32-bit instruction
     
-    initial 
+    initial
     begin
         // Machine code, create an assembler to write the MIPS ISA
         // up to 127 instructions      

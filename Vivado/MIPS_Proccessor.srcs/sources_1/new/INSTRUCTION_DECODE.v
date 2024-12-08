@@ -71,9 +71,9 @@ module INSTRUCTION_DECODE(
         .clk(clk),
         .rst(rst),
         // input
-        .rs(IF_ID_instruction[25:21]),  // first (source) register
-        .rt(IF_ID_instruction[20:16]),  // second register
-        .rd(WB_writeRegister),          // destination register
+        .rs(IF_ID_instruction[25:21]),  // register source
+        .rt(IF_ID_instruction[20:16]),  // register target
+        .rd(WB_writeRegister),          // register destination
         .writeDataRegister(WB_writeDataRegister),
         // control
         .RegWrite(WB_controlWB_RegWrite),
@@ -115,17 +115,17 @@ module INSTRUCTION_DECODE(
         
         // input
         .nextProgramCount(IF_ID_npc),
-        .readData_rs(readData_rs),
-        .readData_rt(readData_rt),
+        .readData_rs(readData_rs),                  // register source
+        .readData_rt(readData_rt),                  // register target
         .instructionSignExtend_15_0(instructionSignExtend_15_0), // 32 bits
         .instruction_20_16(IF_ID_instruction[20:16]),
         .instruction_15_11(IF_ID_instruction[15:11]),
         
         // output
         .npcEXOut(ID_EX_npc),
-        .readData_rsOut(ID_EX_readData_rs),         // first (source) register
-        .readData_rtOut(ID_EX_readData_rt),         // second register
-        .instructionSignExtend_15_0_Out(ID_EX_signExtend), // 32'hFFFF_xxxx OR 32'h0000_xxxx
+        .readData_rsOut(ID_EX_readData_rs),                 // register source
+        .readData_rtOut(ID_EX_readData_rt),                 // register target
+        .instructionSignExtend_15_0_Out(ID_EX_signExtend),  // 32'hFFFF_xxxx OR 32'h0000_xxxx
         .instruction_20_16_Out(ID_EX_instruction_20_16),
         .instruction_15_11_Out(ID_EX_instruction_15_11)
         );            

@@ -22,7 +22,7 @@ module EXECUTE(
     output wire EX_MEM_controlMEM_MemWrite,     // controlMEM[0]
     output wire [1:0] EX_MEM_controlWB,         // [RegWrite, MemToReg]
     
-    output wire EX_MEM_zeroFlag, 
+    output wire EX_MEM_zeroFlag,                // ALU_result = 0
     
     output wire [31:0] EX_MEM_npc,   
     output wire [31:0] EX_MEM_addressMemory,

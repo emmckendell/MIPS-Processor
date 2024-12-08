@@ -1,7 +1,11 @@
 `timescale 1ns / 1ps
 
+/*
+Determines 9 control bits dependent on opcode (
+*/
+
 module control(
-    input wire [5:0] opcode,
+    input wire [5:0] opcode,        // instruction[31:26]
     
     output reg [3:0] controlEX,     // [regDst, aluOp[1:0], aluSrc]
     output reg [2:0] controlMEM,    // [Branch, MemRead, MemWrite]
@@ -12,7 +16,6 @@ module control(
     parameter lw     = 6'b100011;
     parameter sw     = 6'b101011;
     parameter beq    = 6'b100100;
-    parameter addi   = 6'b001000;
     parameter nop    = 6'b100000;
     
     initial
@@ -60,11 +63,6 @@ module control(
                 controlEX  = 4'b0010; // RegDst = x, ALUOp = 01 (sub), ALUSrc = 0
                 controlMEM = 3'b100;  // Branch = 1, MemRead = 0, MemWrite = 0
                 controlWB  = 2'b00;   // RegWrite = 0, MemToReg = x
-            end
-            addi: begin // addi (add immediate) instruction (opcode 8)
-                controlEX  = 4'b1001; // RegDst = 1, ALUOp = 00 (add), ALUSrc = 1
-                controlMEM = 3'b000;  // Branch = 0, MemRead = x, MemWrite = 0
-                controlWB  = 2'b10;   // RegWrite = 1, MemToReg = 0
             end
             nop: begin // nop (no operation) instruction (opcode 32)
                 controlEX  = 4'b0000; // RegDst = 0, ALUOp = 00 (add), ALUSrc = 0

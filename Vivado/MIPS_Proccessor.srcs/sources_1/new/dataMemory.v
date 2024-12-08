@@ -69,19 +69,14 @@ module dataMemory(
         begin
             // Read data from memory if MemRead is enabled
             if (MemRead)
-            begin
                 readData_mem <= memory[addressMemory[7:0]]; 
-            // Read data from memory if MemRead is enabled
-            end
-            
             // Write data to memory if MemWrite is enabled
             if (MemWrite)
-            begin
                 memory[addressMemory[7:0]] <= writeDataMemory;
-            end
         end
     end
     
+    // read 256 memory addresses
     assign memory0   = memory[0];
 	assign memory1   = memory[1];
 	assign memory2   = memory[2];

@@ -4,8 +4,8 @@ module INSTRUCTION_FETCH(
     input clk,
     input rst,
     
-    input wire MEM_PCSrc,
     input wire [31:0] MEM_npc,
+    input wire MEM_PCSrc,
     
     output wire [31:0] IF_ID_npc,
     output wire [31:0] IF_ID_instruction

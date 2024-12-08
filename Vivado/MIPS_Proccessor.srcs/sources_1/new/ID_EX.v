@@ -56,17 +56,17 @@ module ID_EX(
     begin
         if (rst) 
         begin
-            controlEX_RegDst <= 0;  // controlEX[3]
-            controlEX_ALUOp <= 0;   // controlEX[2:1]
-            controlEX_ALUSrc <= 0;  // controlEX[0]
+            controlEX_RegDst <= 0; // controlEX[3]
+            controlEX_ALUOp <= 0;  // controlEX[2:1]
+            controlEX_ALUSrc <= 0; // controlEX[0]
             
-            controlMEMOut <= 0;     // [Branch, MemRead, MemWrite]
-            controlWBOut <= 0;      // [RegWrite, MemToReg]
+            controlMEMOut <= 0;    // [Branch, MemRead, MemWrite]
+            controlWBOut <= 0;     // [RegWrite, MemToReg]
             
             npcEXOut <= 0;
             readData_rsOut <= 0;
             readData_rtOut <= 0;
-            instructionSignExtend_15_0_Out <= 0;    // 32 bits
+            instructionSignExtend_15_0_Out <= 0; // 32 bits
             instruction_20_16_Out <= 0;
             instruction_15_11_Out <= 0;
         end
@@ -76,13 +76,13 @@ module ID_EX(
             controlEX_ALUOp <= controlEX[2:1];
             controlEX_ALUSrc <= controlEX[0];
             
-            controlMEMOut <= controlMEM;    // [Branch, MemRead, MemWrite]
-            controlWBOut <= controlWB;      // [RegWrite, MemToReg]
+            controlMEMOut <= controlMEM; // [Branch, MemRead, MemWrite]
+            controlWBOut <= controlWB;   // [RegWrite, MemToReg]
         
             npcEXOut <= nextProgramCount;
             readData_rsOut <= readData_rs;
             readData_rtOut <= readData_rt;
-            instructionSignExtend_15_0_Out <= instructionSignExtend_15_0;   // 32 bits
+            instructionSignExtend_15_0_Out <= instructionSignExtend_15_0; // 32 bits
             instruction_20_16_Out <= instruction_20_16;
             instruction_15_11_Out <= instruction_15_11; 
         end

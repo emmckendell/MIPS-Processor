@@ -7,18 +7,20 @@ module aluControl(
     output reg [2:0] ALUControl
     );
     
-    // Instructions ALU Control Signals:
-    // ALUControl
+    // instruction types
+    parameter LW_SW = 2'b00;
+    parameter BEQ   = 2'b01;
+    parameter Rtype = 2'b10;
 
     always @(funct, ALUOp)
     begin
         case (ALUOp)
             // lw/sw, beq instructions (funct - xxxxxx)
-            2'b00: ALUControl = 3'b010; // lw/sw instructions (add)
-            2'b01: ALUControl = 3'b110; // beq instructions (sub)
+            LW_SW: ALUControl = 3'b010; // lw/sw instructions (add)
+            BEQ: ALUControl = 3'b110; // beq instructions (sub)
             
             // r-type instruction (funct - instruction[6:0])
-            2'b10:
+            Rtype:
             begin
                 case (funct)
                     6'b100000: ALUControl = 3'b010;  // add

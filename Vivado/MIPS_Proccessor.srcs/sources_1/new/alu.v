@@ -16,12 +16,12 @@ module alu(
 	parameter SLT  = 3'b010;
 	
     // zero flag
-	assign zero = (ALUResult == 32'b0);
-    
+    assign zero = (ALUResult == 32'b0);
+
     always @(ALUControl, A, B)
     begin
-		case (ALUControl)
-			ADD: ALUResult = A + B;                   // add (r-type, lw, sw)
+	case (ALUControl)
+	    ADD: ALUResult = A + B;                   // add (r-type, lw, sw)
             SUB: ALUResult = A - B;                   // sub (r-type, beq)
             AND: ALUResult = A & B;                   // and (r-type)
             OR:  ALUResult = A | B;                   // or  (r-type)

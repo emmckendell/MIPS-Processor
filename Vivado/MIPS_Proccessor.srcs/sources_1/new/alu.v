@@ -10,10 +10,10 @@ module alu(
 	
 	// ALU operations
 	parameter ADD = 3'b010;
-	parameter SUB = 3'b010;
-	parameter AND = 3'b010;
-	parameter OR  = 3'b010;
-	parameter SLT  = 3'b010;
+	parameter SUB = 3'b110;
+	parameter AND = 3'b000;
+	parameter OR  = 3'b001;
+	parameter SLT = 3'b111;
 	
     // zero flag
     assign zero = (ALUResult == 32'b0);

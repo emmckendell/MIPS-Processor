@@ -105,7 +105,7 @@ module MIPS_PIPELINE(
     
     );
     
-    INSTRUCTION_FETCH INSTRUCTION_FETCH_uut(
+    INSTRUCTION_FETCH INSTRUCTION_FETCH_INST(
         .clk(clk),
         .rst(rst),
         // input

@@ -172,17 +172,17 @@ module MEMORY_tb;
         EX_MEM_writeRegister = 5'd0;
         #10;
         
-        rst = 0; #10;
+        rst = 0; #10; // nop
         
-        // r-type (e.g add, sub) instruction
+        // load (lw) instruction
         EX_MEM_controlMEM_Branch = 0;
-        EX_MEM_controlMEM_MemRead = 0;
+        EX_MEM_controlMEM_MemRead = 1;
         EX_MEM_controlMEM_MemWrite = 0;
-        EX_MEM_controlWB = 2'b10;
+        EX_MEM_controlWB = 2'b11;
         EX_MEM_zeroFlag = 0;
-        EX_MEM_npc = 32'hFFFF_0001;
+        EX_MEM_npc = 32'h0000_0003;
         EX_MEM_addressMemory = 32'd1;
-        EX_MEM_writeDataMemory = 32'hA5A5_A5A5;
+        EX_MEM_writeDataMemory = 32'h0000_0000;
         EX_MEM_writeRegister = 5'd1;
         #10;
         
@@ -192,9 +192,9 @@ module MEMORY_tb;
         EX_MEM_controlMEM_MemWrite = 0;
         EX_MEM_controlWB = 2'b11;
         EX_MEM_zeroFlag = 0;
-        EX_MEM_npc = 32'hFFFF_0002;
-        EX_MEM_addressMemory = 32'd1;
-        EX_MEM_writeDataMemory = 32'hB4B4_B4B4;
+        EX_MEM_npc = 32'h0000_0005;
+        EX_MEM_addressMemory = 32'd2;
+        EX_MEM_writeDataMemory = 32'h0000_0000;
         EX_MEM_writeRegister = 5'd2;
         #10;
         
@@ -204,34 +204,34 @@ module MEMORY_tb;
         EX_MEM_controlMEM_MemWrite = 1;
         EX_MEM_controlWB = 2'b00;
         EX_MEM_zeroFlag = 0;
-        EX_MEM_npc = 32'hFFFF_0003;
-        EX_MEM_addressMemory = 32'd0;
-        EX_MEM_writeDataMemory = 32'hC3C3_C3C3;
-        EX_MEM_writeRegister = 5'd3;
+        EX_MEM_npc = 32'h0000_0005;
+        EX_MEM_addressMemory = 32'd2;
+        EX_MEM_writeDataMemory = 32'h0000_0001;
+        EX_MEM_writeRegister = 5'd1;
         #10;
         
-        // load (lw) instruction
+        // r-type (e.g add, sub) instruction
         EX_MEM_controlMEM_Branch = 0;
-        EX_MEM_controlMEM_MemRead = 1;
+        EX_MEM_controlMEM_MemRead = 0;
         EX_MEM_controlMEM_MemWrite = 0;
-        EX_MEM_controlWB = 2'b11;
+        EX_MEM_controlWB = 2'b10;
         EX_MEM_zeroFlag = 0;
-        EX_MEM_npc = 32'hFFFF_0003;
-        EX_MEM_addressMemory = 32'd0;
-        EX_MEM_writeDataMemory = 32'hB4B4_B4B4;
-        EX_MEM_writeRegister = 5'd4;
+        EX_MEM_npc = 32'h0000_0825;
+        EX_MEM_addressMemory = 32'd3;
+        EX_MEM_writeDataMemory = 32'h0000_0002;
+        EX_MEM_writeRegister = 5'd1;
         #10;
         
-        // branch (beq) instruction
+        // beq instruction
         EX_MEM_controlMEM_Branch = 1;
         EX_MEM_controlMEM_MemRead = 0;
         EX_MEM_controlMEM_MemWrite = 0;
         EX_MEM_controlWB = 2'b00;
-        EX_MEM_zeroFlag = 1;
-        EX_MEM_npc = 32'hFFFF_FFFF;
-        EX_MEM_addressMemory = 32'h0000_0003;
-        EX_MEM_writeDataMemory = 32'hD2D2_D2D2;
-        EX_MEM_writeRegister = 5'd4;
+        EX_MEM_zeroFlag = 0;
+        EX_MEM_npc = 32'h0000_0007;
+        EX_MEM_addressMemory = 32'd1;
+        EX_MEM_writeDataMemory = 32'h0000_0002;
+        EX_MEM_writeRegister = 5'd2;
         #10;
         
         $finish;

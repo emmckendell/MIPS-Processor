@@ -78,29 +78,14 @@ module EXECUTE_tb;
         ID_EX_controlWB = 2'b00;
         
         ID_EX_npc = 32'h0;
-        ID_EX_readData_rs = 32'd0;
-        ID_EX_readData_rt = 32'd0;
-        ID_EX_signExtend = 32'h0;
-        ID_EX_instruction_20_16 = 5'b0;
-        ID_EX_instruction_15_11 = 5'b0;
+        ID_EX_readData_rs = 32'h0000_0000;
+        ID_EX_readData_rt = 32'h0000_0000;
+        ID_EX_signExtend = 32'h0000_0000;
+        ID_EX_instruction_20_16 = 5'b00000;
+        ID_EX_instruction_15_11 = 5'b00000;
         #10;
         
-        rst = 0; #10;
-        
-        // r-type instruction
-        ID_EX_controlEX_RegDst = 1'b1;
-        ID_EX_controlEX_ALUOp = 2'b10;  // r-type
-        ID_EX_controlEX_ALUSrc = 1'b0;
-        ID_EX_controlMEM = 3'b000;
-        ID_EX_controlWB = 2'b10;
-        
-        ID_EX_npc = 32'h0000_0001;
-        ID_EX_readData_rs = 32'd3;
-        ID_EX_readData_rt = 32'd2;
-        ID_EX_signExtend = 32'h0000_0800;
-        ID_EX_instruction_20_16 = 5'b01100;
-        ID_EX_instruction_15_11 = 5'b00001;
-        #10;
+        rst = 0; #10; // nop
         
         // load (lw) instruction
         ID_EX_controlEX_RegDst = 1'b0;
@@ -110,11 +95,71 @@ module EXECUTE_tb;
         ID_EX_controlWB = 2'b11;
         
         ID_EX_npc = 32'h0000_0002;
-        ID_EX_readData_rs = 32'd2;
-        ID_EX_readData_rt = 32'd3;
-        ID_EX_signExtend = 32'hFFFF_8800;
-        ID_EX_instruction_20_16 = 5'b10001;
-        ID_EX_instruction_15_11 = 5'b01110;
+        ID_EX_readData_rs = 32'h0000_0000;
+        ID_EX_readData_rt = 32'h0000_0000;
+        ID_EX_signExtend = 32'h0000_0001;
+        ID_EX_instruction_20_16 = 5'b00001;
+        ID_EX_instruction_15_11 = 5'b00000;
+        #10;
+        
+        // load (lw) instruction
+        ID_EX_controlEX_RegDst = 1'b0;
+        ID_EX_controlEX_ALUOp = 2'b00;  // add
+        ID_EX_controlEX_ALUSrc = 1'b1;
+        ID_EX_controlMEM = 3'b010;
+        ID_EX_controlWB = 2'b11;
+        
+        ID_EX_npc = 32'h0000_0003;
+        ID_EX_readData_rs = 32'h0000_0000;
+        ID_EX_readData_rt = 32'h0000_0000;
+        ID_EX_signExtend = 32'h0000_0002;
+        ID_EX_instruction_20_16 = 5'b00010;
+        ID_EX_instruction_15_11 = 5'b00000;
+        #10;
+        
+        // store (sw) instruction
+        ID_EX_controlEX_RegDst = 1'b0;
+        ID_EX_controlEX_ALUOp = 2'b00;  // add
+        ID_EX_controlEX_ALUSrc = 1'b1;
+        ID_EX_controlMEM = 3'b001;
+        ID_EX_controlWB = 2'b00;
+        
+        ID_EX_npc = 32'h0000_0004;
+        ID_EX_readData_rs = 32'h0000_0001;
+        ID_EX_readData_rt = 32'h0000_0001;
+        ID_EX_signExtend = 32'h0000_0001;
+        ID_EX_instruction_20_16 = 5'b00001;
+        ID_EX_instruction_15_11 = 5'b00000;
+        #10;
+        
+        // r-type (e.g add, sub) instruction
+        ID_EX_controlEX_RegDst = 1'b1;
+        ID_EX_controlEX_ALUOp = 2'b10;  // r-type (add)
+        ID_EX_controlEX_ALUSrc = 1'b0;
+        ID_EX_controlMEM = 3'b000;
+        ID_EX_controlWB = 2'b10;
+        
+        ID_EX_npc = 32'h0000_0005;
+        ID_EX_readData_rs = 32'h0000_0001;
+        ID_EX_readData_rt = 32'h0000_0002;
+        ID_EX_signExtend = 32'h0000_0820;
+        ID_EX_instruction_20_16 = 5'b00010;
+        ID_EX_instruction_15_11 = 5'b00001;
+        #10;
+        
+        // branch (beq) instruction
+        ID_EX_controlEX_RegDst = 1'b0;
+        ID_EX_controlEX_ALUOp = 2'b01;  // sub
+        ID_EX_controlEX_ALUSrc = 1'b0;
+        ID_EX_controlMEM = 3'b100;
+        ID_EX_controlWB = 2'b00;
+        
+        ID_EX_npc = 32'h0000_0006;
+        ID_EX_readData_rs = 32'h0000_0003;
+        ID_EX_readData_rt = 32'h0000_0002;
+        ID_EX_signExtend = 32'h0000_0001;
+        ID_EX_instruction_20_16 = 5'b00010;
+        ID_EX_instruction_15_11 = 5'b00000;
         #10;
                
         $finish;

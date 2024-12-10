@@ -16,8 +16,8 @@ module MIPS_PIPELINE_tb;
     wire [1:0] ID_EX_controlWB;         // [RegWrite, MemToReg]
     
     wire [31:0] ID_EX_npc;
-    wire [31:0] ID_EX_readData_rs;      // first (source) register
-    wire [31:0] ID_EX_readData_rt;      // second register
+    wire [31:0] ID_EX_readData_rs;      // register source
+    wire [31:0] ID_EX_readData_rt;      // register target
     wire [31:0] ID_EX_signExtend;
     wire [4:0] ID_EX_instruction_20_16;
     wire [4:0] ID_EX_instruction_15_11;
@@ -234,6 +234,7 @@ module MIPS_PIPELINE_tb;
         rst = 1;
         #20;
         
+        // Outputs depend on instructionMemory, registers, and dataMemory
         rst = 0; #540;
         
         $finish;

@@ -37,19 +37,17 @@ module INSTRUCTION_FETCH_tb;
         MEM_npc = 32'h0000_0000;
         #10;
 
-        rst = 0; 
+        rst = 0; #10; // nop
               
-        MEM_PCSrc = 1;
-        MEM_npc = 32'h0000_0002;
-        #50;
-        
+        // r-type (e.g add, sub) / load (lw) / store (sw) instructions
         MEM_PCSrc = 0;
-        MEM_npc = 32'h0000_0000;
-        #50;
+        MEM_npc = 32'h0000_0001;
+        #20;
         
+        // branch (beq) instructions
         MEM_PCSrc = 1;
-        MEM_npc = 32'h0000_000A;
-        #50;
+        MEM_npc = 32'h0000_0005;
+        #20;
         
         $finish;
     end

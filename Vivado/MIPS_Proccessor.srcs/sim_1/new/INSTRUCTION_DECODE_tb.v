@@ -77,11 +77,7 @@ module INSTRUCTION_DECODE_tb;
     
     initial 
     begin
-        rst = 1; 
-        // i-format: opcode(0)_rs_rt_rd_shamt_funct
-        // j-format: opcode(35/43)_rs_rt_address
-        // r-format: opcode(4)_rs_rt_address
-                     
+        rst = 1;               
         IF_ID_instruction = 32'b000000_00000_00000_0000_0000_0000_0000;
         WB_writeRegister = 5'd0;
         WB_writeDataRegister = 32'h0000_0000;
@@ -89,76 +85,55 @@ module INSTRUCTION_DECODE_tb;
         IF_ID_npc = 32'h0000_0000;
         #10;
         
-        rst = 0; #10;
+        // no operation (nop) instruction
+        rst = 0;
+        IF_ID_instruction = 32'b100000_00000_00000_0000000000000000;
+        WB_writeRegister = 5'd0;
+        WB_writeDataRegister = 32'h0000_0000;
+        WB_controlWB_RegWrite = 0;
+        IF_ID_npc = 32'h0000_0000;
+        #10;
         
-        // $r16 = $zero + 3 | opcode=001000, rs=00000, rt=10000, immediate=0000_0000_0000_0011
-        IF_ID_npc = 32'h0000_0001;
-        IF_ID_instruction = 32'b001000_00000_10001_0000_0000_0000_0011;
-        #50;
-        
-        // write to register 16 ($r16)
-        WB_writeRegister = 5'd16;
-        WB_writeDataRegister = 32'h0000_0003;
-        WB_controlWB_RegWrite = 1;
-        #50;
-        
-        // $r17 = $zero + 2 | opcode=001000, rs=00000, rt=10001, immediate=0000_0000_0000_0010
-        IF_ID_npc = 32'h0000_0002;
-        IF_ID_instruction = 32'b001000_00000_10001_00000_00000_000010;
-        #50;
-        
-        // write to register 17 ($r17)
-        WB_writeRegister = 5'd17;
-        WB_writeDataRegister = 32'h0000_0002;
-        WB_controlWB_RegWrite = 1;
-        #50;
-        
-        // $r18 = $r16 + $r17 | opcode=000000, rs=10000, rt=10001, rd=10010, shamt=00000, funct=100000
-        // $r18 = 3 + 2
-        IF_ID_npc = 32'h0000_0003;
-        IF_ID_instruction = 32'b000000_10000_10001_10010_00000_100000;
-        #50;
-        
-        // write to register 18 ($r18)
-        WB_writeRegister = 5'd18;
-        WB_writeDataRegister = 32'h0000_0005;
-        WB_controlWB_RegWrite = 1;
-        #50;
-        
-        // $r19 = $r16 - $r17 | opcode=000000, rs=10000, rt=10001, rd=10011, shamt=00000, funct=100010
-        // $r19 = 3 - 2
-        IF_ID_npc = 32'h0000_0004;
-        IF_ID_instruction = 32'b000000_10000_10001_10011_00000_100010;
-        #50;
-        
-        // write to register 19 ($r19)
-        WB_writeRegister = 5'd19;
+        // load (lw) instruction
+        IF_ID_instruction = 32'b100011_00000_00001_0000000000000001;
+        WB_writeRegister = 5'd1;
         WB_writeDataRegister = 32'h0000_0001;
         WB_controlWB_RegWrite = 1;
-        #50;
+        IF_ID_npc = 32'h0000_0002;
+        #10;
         
-        // memory[$r16 + 3] = $r18(32'h5) | opcode=101011, rs=10000, rt=10010, offset=0000_0000_0000_0011
-        // memory[3 + 3] = (32'h5)
-        IF_ID_npc = 32'h0000_0005;
-        IF_ID_instruction = 32'b101011_10000_10010_0000000000000011;
-        #50;
-                
-        // no write to register needed
-        WB_controlWB_RegWrite = 0; 
-        #50;
-        
-        // $r20 = memory[$r16 + 3] | opcode=100011, rs=10000, rt=10100, offset=0000_0000_0000_0010
-        // $r20 = memory[3 + 3](contains 32'h5)
-        IF_ID_npc = 32'h0000_0006;
-        IF_ID_instruction = 32'b100011_10000_10100_0000000000000011;
-        #50;
-        
-        // write to register 20 ($r20)
-        WB_writeRegister = 5'd20;
-        WB_writeDataRegister = 32'h0000_0005;  // assuming memory[$r16 + 3] contains 32'h5
+        // load (lw) instruction
+        IF_ID_instruction = 32'b100011_00000_00010_0000000000000010;
+        WB_writeRegister = 5'd2;
+        WB_writeDataRegister = 32'h0000_0002;
         WB_controlWB_RegWrite = 1;
-        #50;
-                  
+        IF_ID_npc = 32'h0000_0003;
+        #10;
+        
+        // store (sw) instruction
+        IF_ID_instruction = 32'b101011_00000_00001_0000000000000001;
+        WB_writeRegister = 5'd2;
+        WB_writeDataRegister = 32'hA5A5_A5A5;
+        WB_controlWB_RegWrite = 0;
+        IF_ID_npc = 32'h0000_0004;
+        #10;
+        
+        // r-type (e.g add, sub) instruction
+        IF_ID_instruction = 32'b000000_00001_00010_00001_00000_100000;
+        WB_writeRegister = 5'd1;
+        WB_writeDataRegister = 32'h0000_0003;
+        WB_controlWB_RegWrite = 1;
+        IF_ID_npc = 32'h0000_0005;
+        #10;
+        
+        // branch (beq) instruction
+        IF_ID_instruction = 32'b000100_00001_00010_0000000000000001;
+        WB_writeRegister = 5'd2;
+        WB_writeDataRegister = 32'hC3C3_C3C3;
+        WB_controlWB_RegWrite = 0;
+        IF_ID_npc = 32'h0000_0006;
+        #10;
+         
         $finish;
     end
 endmodule
